@@ -210,7 +210,7 @@ installBtn.addEventListener('click', () => {
       <div class="cmp-card n">উত্তর</div>
       <div class="cmp-card e">পূর্ব</div>
       <div class="cmp-card s">দক্ষিন</div>
-      <div class="cmp-card w">পশ্চিম</div>
+      <div class="cmp-card w"> <img src="https://cdn-icons-png.flaticon.com/512/10203/10203988.png" alt="" style="width: 30px;"></div></div>
       <div class="cmp-ticks"></div>
     </div>
     <div class="cmp-needle">
