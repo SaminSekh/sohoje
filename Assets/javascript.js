@@ -171,277 +171,150 @@ installBtn.addEventListener('click', () => {
 
 
 // JavaScript code to create a dynamic Qibla compass inside #compasQ  ###################################################
-document.addEventListener('DOMContentLoaded', function() {
-    const compasQ = document.getElementById('compasQ');
-    if (!compasQ) return;
-    
-    // কম্পাস কন্টেইনার তৈরি
-    const compassContainer = document.createElement('div');
-    compassContainer.style.width = '300px';
-    compassContainer.style.height = '300px';
-    compassContainer.style.margin = '20px auto';
-    compassContainer.style.position = 'relative';
-    compassContainer.style.borderRadius = '50%';
-    compassContainer.style.backgroundColor = '#f8f9fa';
-    compassContainer.style.boxShadow = '0 0 15px rgba(0,0,0,0.2), inset 0 0 20px rgba(0,0,0,0.1)';
-    compassContainer.style.overflow = 'hidden';
-    
-    // স্থির কাটা তৈরি (উত্তর দিক নির্দেশক)
-    const fixedNeedle = document.createElement('div');
-    fixedNeedle.style.position = 'absolute';
-    fixedNeedle.style.width = '4px';
-    fixedNeedle.style.height = '130px';
-    fixedNeedle.style.backgroundColor = '#e74c3c';
-    fixedNeedle.style.left = '50%';
-    fixedNeedle.style.top = '50%';
-    fixedNeedle.style.transform = 'translate(-50%, -100%)';
-    fixedNeedle.style.zIndex = '10';
-    fixedNeedle.style.borderRadius = '2px 2px 0 0';
-    
-    // কাটার মাথা (ত্রিভুজাকার)
-    const needleHead = document.createElement('div');
-    needleHead.style.width = '0';
-    needleHead.style.height = '0';
-    needleHead.style.borderLeft = '10px solid transparent';
-    needleHead.style.borderRight = '10px solid transparent';
-    needleHead.style.borderBottom = '20px solid #e74c3c';
-    needleHead.style.position = 'absolute';
-    needleHead.style.left = '50%';
-    needleHead.style.top = 'calc(50% - 130px)';
-    needleHead.style.transform = 'translate(-50%, -100%)';
-    needleHead.style.zIndex = '11';
-    
-    // কিবলা ইন্ডিকেটর তৈরি
-    const qiblaIndicator = document.createElement('div');
-    qiblaIndicator.style.position = 'absolute';
-    qiblaIndicator.style.width = '6px';
-    qiblaIndicator.style.height = '140px';
-    qiblaIndicator.style.background = 'linear-gradient(to top, transparent, #27ae60 80%)';
-    qiblaIndicator.style.left = '50%';
-    qiblaIndicator.style.top = '50%';
-    qiblaIndicator.style.transformOrigin = 'bottom center';
-    qiblaIndicator.style.transform = 'translate(-50%, -100%)';
-    qiblaIndicator.style.zIndex = '5';
-    qiblaIndicator.style.opacity = '0.9';
-    qiblaIndicator.style.borderRadius = '3px';
-    
-    // সেন্টার পিন তৈরি
-    const centerPin = document.createElement('div');
-    centerPin.style.position = 'absolute';
-    centerPin.style.width = '24px';
-    centerPin.style.height = '24px';
-    centerPin.style.backgroundColor = '#8B4513';
-    centerPin.style.borderRadius = '50%';
-    centerPin.style.left = '50%';
-    centerPin.style.top = '50%';
-    centerPin.style.transform = 'translate(-50%, -50%)';
-    centerPin.style.zIndex = '20';
-    centerPin.style.boxShadow = '0 0 8px rgba(0,0,0,0.5)';
-    centerPin.style.border = '3px solid #fff';
-    
-    // দিক নির্দেশক লেবেল (N, E, S, W)
-    const directions = [
-        { label: 'N', angle: 0, color: '#e74c3c' },
-        { label: 'E', angle: 90, color: '#333' },
-        { label: 'S', angle: 180, color: '#333' },
-        { label: 'W', angle: 270, color: '#333' }
-    ];
-    
-    directions.forEach(dir => {
-        const direction = document.createElement('div');
-        direction.textContent = dir.label;
-        direction.style.position = 'absolute';
-        direction.style.fontWeight = 'bold';
-        direction.style.fontSize = '18px';
-        direction.style.color = dir.color;
-        direction.style.zIndex = '15';
-        
-        // দিক নির্দেশকগুলোর অবস্থান নির্ধারণ
-        const rad = dir.angle * Math.PI / 180;
-        const radius = 120;
-        const center = 150;
-        
-        direction.style.left = (center + Math.sin(rad) * radius - 10) + 'px';
-        direction.style.top = (center - Math.cos(rad) * radius - 10) + 'px';
-        
-        compassContainer.appendChild(direction);
-    });
-    
-    // ডিগ্রী মার্কার তৈরি
-    for (let i = 0; i < 36; i++) {
-        if (i % 3 !== 0) continue; // প্রতি ৩০ ডিগ্রীতে একটি মার্কার
-        
-        const marker = document.createElement('div');
-        const angle = i * 10;
-        const rad = angle * Math.PI / 180;
-        const length = i % 9 === 0 ? 20 : 12;
-        const width = i % 9 === 0 ? 3 : 2;
-        const color = i % 9 === 0 ? '#333' : '#666';
-        
-        marker.style.position = 'absolute';
-        marker.style.width = width + 'px';
-        marker.style.height = length + 'px';
-        marker.style.backgroundColor = color;
-        marker.style.left = '50%';
-        marker.style.top = '15px';
-        marker.style.transformOrigin = 'bottom center';
-        marker.style.transform = `translate(-50%, 0%) rotate(${angle}deg)`;
-        
-        compassContainer.appendChild(marker);
+
+// কম্পাস কনফিগারেশন
+const config = {
+    size: 300,
+    circleWidth: 10,
+    majorTickLength: 20,
+    minorTickLength: 10,
+    font: '16px Arial',
+    colors: {
+        background: '#f5f5f5',
+        circle: '#333',
+        needle: 'red',
+        north: '#d00',
+        east: '#00d',
+        south: '#0a0',
+        west: '#d60',
+        text: '#333'
     }
+};
+
+// কম্পাস কন্টেইনার তৈরি করুন
+const compasContainer = document.getElementById('compasQ');
+const canvas = document.createElement('canvas');
+canvas.width = config.size;
+canvas.height = config.size;
+canvas.style.display = 'block';
+canvas.style.margin = '0 auto';
+compasContainer.appendChild(canvas);
+
+const ctx = canvas.getContext('2d');
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+const radius = (canvas.width / 2) - config.circleWidth;
+
+let currentHeading = 0;
+
+// কম্পাস আঁকুন
+function drawCompass(heading) {
+    // ক্যানভাস পরিষ্কার করুন
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // তথ্য প্রদর্শনের এলাকা
-    const infoDisplay = document.createElement('div');
-    infoDisplay.style.textAlign = 'center';
-    infoDisplay.style.marginTop = '20px';
-    infoDisplay.style.fontSize = '18px';
-    infoDisplay.style.color = '#2c3e50';
-    infoDisplay.style.fontWeight = '500';
-    infoDisplay.innerHTML = 'কিবলা দিক: নির্ণয় করা হচ্ছে...';
+    // বাইরের বৃত্ত আঁকুন
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius + config.circleWidth, 0, 2 * Math.PI);
+    ctx.fillStyle = config.colors.background;
+    ctx.fill();
+    ctx.strokeStyle = config.colors.circle;
+    ctx.lineWidth = config.circleWidth;
+    ctx.stroke();
     
-    // লোকেশন এক্সেস বাটন
-    const permissionButton = document.createElement('button');
-    permissionButton.textContent = 'লোকেশন এক্সেস দিন';
-    permissionButton.style.background = '#3498db';
-    permissionButton.style.color = 'white';
-    permissionButton.style.border = 'none';
-    permissionButton.style.padding = '12px 20px';
-    permissionButton.style.borderRadius = '30px';
-    permissionButton.style.fontSize = '16px';
-    permissionButton.style.cursor = 'pointer';
-    permissionButton.style.marginTop = '15px';
-    permissionButton.style.transition = 'background 0.3s';
-    
-    permissionButton.onmouseover = function() {
-        this.style.background = '#2980b9';
-    };
-    
-    permissionButton.onmouseout = function() {
-        this.style.background = '#3498db';
-    };
-    
-    // স্ট্যাটাস মেসেজ
-    const statusMessage = document.createElement('div');
-    statusMessage.style.margin = '15px 0';
-    statusMessage.style.padding = '10px';
-    statusMessage.style.borderRadius = '8px';
-    statusMessage.style.background = '#fff3cd';
-    statusMessage.style.color = '#856404';
-    statusMessage.textContent = 'কিবলা দিক নির্ণয় করতে আপনার লোকেশন এক্সেস প্রয়োজন';
-    
-    // কম্পাস অ্যাসেম্বল করা
-    compassContainer.appendChild(fixedNeedle);
-    compassContainer.appendChild(needleHead);
-    compassContainer.appendChild(qiblaIndicator);
-    compassContainer.appendChild(centerPin);
-    compasQ.appendChild(compassContainer);
-    compasQ.appendChild(infoDisplay);
-    compasQ.appendChild(statusMessage);
-    compasQ.appendChild(permissionButton);
-    
-    // মক্কার স্থানাঙ্ক
-    const mecca = {
-        latitude: 21.4225,
-        longitude: 39.8262
-    };
-    
-    let currentPosition = null;
-    let qiblaAngle = 0;
-    
-    // কিবলা দিক নির্ণয়
-    function calculateQiblaDirection(lat, lng) {
-        const phiK = mecca.latitude * Math.PI / 180.0;
-        const lambdaK = mecca.longitude * Math.PI / 180.0;
-        const phi = lat * Math.PI / 180.0;
-        const lambda = lng * Math.PI / 180.0;
+    // ডিগ্রী এবং দিকনির্দেশ আঁকুন
+    for (let i = 0; i < 360; i += 5) {
+        const angle = (i - heading) * Math.PI / 180;
+        const sin = Math.sin(angle);
+        const cos = Math.cos(angle);
         
-        const psi = 180.0 / Math.PI * Math.atan2(
-            Math.sin(lambdaK - lambda),
-            Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda)
-        );
-        
-        return (psi + 360) % 360;
-    }
-    
-    // কম্পাস রোটেট করার ফাংশন
-    function rotateCompass(alpha) {
-        if (currentPosition) {
-            // কম্পাস রোটেশন আপডেট
-            compassContainer.style.transform = `rotate(${-alpha}deg)`;
+        // প্রধান টিক চিহ্ন (প্রতি 30 ডিগ্রী)
+        if (i % 30 === 0) {
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = config.colors.circle;
             
-            // বর্তমান হেডিং相对于 কিবলা দিক
-            const relativeQiblaAngle = (qiblaAngle - alpha + 360) % 360;
+            // টিক চিহ্ন আঁকুন
+            ctx.beginPath();
+            ctx.moveTo(centerX + sin * (radius - config.majorTickLength), centerY - cos * (radius - config.majorTickLength));
+            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
+            ctx.stroke();
             
-            // কিবলা ইন্ডিকেটর আপডেট
-            qiblaIndicator.style.transform = `translate(-50%, -100%) rotate(${relativeQiblaAngle}deg)`;
+            // দিকনির্দেশ লেবেল
+            let direction = '';
+            let color = config.colors.text;
             
-            // তথ্য আপডেট
-            infoDisplay.innerHTML = `কিবলা: ${Math.round(relativeQiblaAngle)}° দিকে (উত্তর থেকে)`;
-        }
-    }
-    
-    // ডিভাইস ওরিয়েন্টেশন হ্যান্ডলিং
-    function handleOrientation(event) {
-        if (event.alpha !== null) {
-            // iOS ডিভাইসের জন্য কম্পাস কারেকশন
-            if (event.webkitCompassHeading !== undefined) {
-                rotateCompass(event.webkitCompassHeading);
+            if (i === 0) {
+                direction = 'N';
+                color = config.colors.north;
+            } else if (i === 90) {
+                direction = 'E';
+                color = config.colors.east;
+            } else if (i === 180) {
+                direction = 'S';
+                color = config.colors.south;
+            } else if (i === 270) {
+                direction = 'W';
+                color = config.colors.west;
             } else {
-                rotateCompass(360 - event.alpha);
+                direction = i.toString();
             }
+            
+            // লেবেল আঁকুন
+            ctx.font = config.font;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(direction, centerX + sin * (radius - config.majorTickLength - 20), centerY - cos * (radius - config.majorTickLength - 20));
+        } 
+        // ছোট টিক চিহ্ন
+        else {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = config.colors.circle;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX + sin * (radius - config.minorTickLength), centerY - cos * (radius - config.minorTickLength));
+            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
+            ctx.stroke();
         }
     }
     
-    // লোকেশন অনুমতি চাওয়া
-    function requestLocation() {
-        statusMessage.textContent = "আপনার লোকেশন শনাক্ত করা হচ্ছে...";
-        statusMessage.style.background = "#d4edda";
-        statusMessage.style.color = "#155724";
+    // কম্পাস সুই আঁকুন
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY - radius + 20);
+    ctx.lineTo(centerX - 10, centerY);
+    ctx.lineTo(centerX, centerY + 10);
+    ctx.lineTo(centerX + 10, centerY);
+    ctx.closePath();
+    ctx.fillStyle = config.colors.needle;
+    ctx.fill();
+    
+    // কেন্দ্রীয় বিন্দু আঁকুন
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = config.colors.circle;
+    ctx.fill();
+}
+
+// ডিভাইস ওরিয়েন্টেশন শনাক্ত করুন
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+        // কম্পাস হেডিং নিন (ডিগ্রীতে)
+        if (event.alpha !== null) {
+            currentHeading = event.alpha; // iOS এবং কিছু Android ডিভাইস
+        } else if (event.webkitCompassHeading !== undefined) {
+            currentHeading = event.webkitCompassHeading; // iOS WebKit
+        }
         
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    currentPosition = position;
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    
-                    // কিবলা দিক নির্ণয়
-                    qiblaAngle = calculateQiblaDirection(lat, lng);
-                    
-                    infoDisplay.innerHTML = `কিবলা: ${Math.round(qiblaAngle)}° দিকে (উত্তর থেকে)`;
-                    statusMessage.textContent = "লোকেশন শনাক্ত করা হয়েছে!";
-                    
-                    // ডিভাইস ওরিয়েন্টেশন শুনা শুরু করুন
-                    if (window.DeviceOrientationEvent) {
-                        window.addEventListener('deviceorientation', handleOrientation);
-                        statusMessage.textContent += " কম্পাস আপডেট করতে ডিভাইস ঘোরান।";
-                    } else {
-                        statusMessage.textContent = "এই ডিভাইসে কম্পাস সাপোর্ট করে না।";
-                        statusMessage.style.background = "#f8d7da";
-                        statusMessage.style.color = "#721c24";
-                    }
-                },
-                function(error) {
-                    statusMessage.textContent = "লোকেশন পেতে সমস্যা: " + error.message;
-                    statusMessage.style.background = "#f8d7da";
-                    statusMessage.style.color = "#721c24";
-                },
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
-        } else {
-            statusMessage.textContent = "এই ব্রাউজারে জিওলোকেশন সাপোর্ট করে না।";
-            statusMessage.style.background = "#f8d7da";
-            statusMessage.style.color = "#721c24";
-        }
-    }
-    
-    // অনুমতি বাটনে ইভেন্ট লিসেনার যোগ
-    permissionButton.addEventListener('click', requestLocation);
-    
-    // ডিভাইস ওরিয়েন্টেশন সাপোর্ট করে কিনা চেক
-    if (!window.DeviceOrientationEvent) {
-        statusMessage.textContent = "দুঃখিত, আপনার ডিভাইস কম্পাস ফাংশনালিটি সাপোর্ট করে না।";
-        statusMessage.style.background = "#f8d7da";
-        statusMessage.style.color = "#721c24";
-    }
-});
+        // কম্পাস আপডেট করুন
+        drawCompass(currentHeading);
+    }, false);
+} else {
+    // ডিভাইস ওরিয়েন্টেশন সাপোর্ট করে না
+    ctx.font = '20px Arial';
+    ctx.fillStyle = config.colors.text;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('কম্পাস আপনার ডিভাইসে সাপোর্ট করে না', centerX, centerY);
+}
+
+// প্রথমবার কম্পাস আঁকুন
+drawCompass(currentHeading);
