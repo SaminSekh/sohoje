@@ -187,7 +187,7 @@ installBtn.addEventListener('click', () => {
     .cmp-card.n{top:10px; transform:translateX(-280%);}
     .cmp-card.s{bottom:10px; transform:translateX(-225%);}
     .cmp-card.e{right:10px; top:50%; transform:translateY(-45%);}
-    .cmp-card.w{left:10px; top:50%; transform:translateY(-50%);}
+    .cmp-card.w{left:10px; top:50%; transform:translateY(-50%); rotate:260deg;}
     .cmp-ticks{position:absolute; inset:22px; border-radius:50%;}
     .cmp-ticks div{position:absolute; left:50%; top:0; width:2px; height:12px; background:#94a3b8; transform-origin:50% 108px;}
     .cmp-ticks div.major{height:18px; background:#475569;}
@@ -316,7 +316,7 @@ installBtn.addEventListener('click', () => {
       noteEl.textContent = "Pointing to magnetic North.";
       onReading(heading);
     } else {
-      noteEl.textContent = "No compass data available on this device.";
+      noteEl.textContent = "";
     }
   };
 
