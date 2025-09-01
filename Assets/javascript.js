@@ -171,35 +171,40 @@ installBtn.addEventListener('click', () => {
 
 
 // JavaScript code to create a dynamic Qibla compass inside #compasQ  ###################################################
+
+
 // কম্পাস কনফিগারেশন
 const config = {
     size: 300,
     circleWidth: 10,
-    majorTickLength: 20,
-    minorTickLength: 10,
-    font: '16px Arial',
     colors: {
-        background: '#f5f5f5',
-        circle: '#333',
-        needle: 'red',
-        north: '#d00',
-        east: '#00d',
-        south: '#0a0',
-        west: '#d60',
-        text: '#333'
+        background: '#f8f9fa',
+        circle: '#343a40',
+        needle: '#dc3545',
+        north: '#dc3545',
+        east: '#007bff',
+        south: '#28a745',
+        west: '#fd7e14',
+        text: '#212529'
     }
 };
 
 // কম্পাস কন্টেইনার তৈরি করুন
 const compasContainer = document.getElementById('compasQ');
+compasContainer.style.display = 'flex';
+compasContainer.style.flexDirection = 'column';
+compasContainer.style.alignItems = 'center';
+compasContainer.style.justifyContent = 'center';
+compasContainer.style.padding = '20px';
+compasContainer.style.fontFamily = 'Arial, sans-serif';
+
 const canvas = document.createElement('canvas');
 canvas.width = config.size;
 canvas.height = config.size;
 canvas.style.display = 'block';
 canvas.style.margin = '0 auto';
-canvas.style.background = '#2c3e50';
 canvas.style.borderRadius = '50%';
-canvas.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3)';
+canvas.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
 compasContainer.appendChild(canvas);
 
 const ctx = canvas.getContext('2d');
@@ -208,7 +213,13 @@ const centerY = canvas.height / 2;
 const radius = (canvas.width / 2) - config.circleWidth;
 
 let currentHeading = 0;
-let isCompassAvailable = false;
+
+// ডিগ্রী থেকে দিক নির্ধারণ
+function getDirectionName(degrees) {
+    const directions = ['উত্তর', 'উত্তর-পূর্ব', 'পূর্ব', 'দক্ষিণ-পূর্ব', 'দক্ষিণ', 'দক্ষিণ-পশ্চিম', 'পশ্চিম', 'উত্তর-পশ্চিম'];
+    const index = Math.round(degrees / 45) % 8;
+    return directions[index];
+}
 
 // কম্পাস আঁকুন
 function drawCompass(heading) {
@@ -224,156 +235,147 @@ function drawCompass(heading) {
     ctx.lineWidth = config.circleWidth;
     ctx.stroke();
     
-    // ডিগ্রী এবং দিকনির্দেশ আঁকুন
-    for (let i = 0; i < 360; i += 5) {
+    // অভ্যন্তরীণ বৃত্ত আঁকুন
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius - 15, 0, 2 * Math.PI);
+    ctx.strokeStyle = '#dee2e6';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    // প্রধান দিকনির্দেশ (N, E, S, W) আঁকুন
+    const mainDirections = [
+        { text: 'N', angle: 0, color: config.colors.north },
+        { text: 'E', angle: 90, color: config.colors.east },
+        { text: 'S', angle: 180, color: config.colors.south },
+        { text: 'W', angle: 270, color: config.colors.west }
+    ];
+    
+    mainDirections.forEach(dir => {
+        const angle = (dir.angle - heading) * Math.PI / 180;
+        const x = centerX + Math.sin(angle) * (radius - 40);
+        const y = centerY - Math.cos(angle) * (radius - 40);
+        
+        ctx.font = 'bold 24px Arial';
+        ctx.fillStyle = dir.color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(dir.text, x, y);
+    });
+    
+    // ডিগ্রী চিহ্ন আঁকুন
+    for (let i = 0; i < 360; i += 30) {
+        if (i % 90 === 0) continue; // Skip main directions
+        
         const angle = (i - heading) * Math.PI / 180;
         const sin = Math.sin(angle);
         const cos = Math.cos(angle);
         
-        // প্রধান টিক চিহ্ন (প্রতি 30 ডিগ্রী)
-        if (i % 30 === 0) {
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = config.colors.circle;
-            
-            // টিক চিহ্ন আঁকুন
-            ctx.beginPath();
-            ctx.moveTo(centerX + sin * (radius - config.majorTickLength), centerY - cos * (radius - config.majorTickLength));
-            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
-            ctx.stroke();
-            
-            // দিকনির্দেশ লেবেল
-            let direction = '';
-            let color = config.colors.text;
-            
-            if (i === 0) {
-                direction = 'N';
-                color = config.colors.north;
-            } else if (i === 90) {
-                direction = 'E';
-                color = config.colors.east;
-            } else if (i === 180) {
-                direction = 'S';
-                color = config.colors.south;
-            } else if (i === 270) {
-                direction = 'W';
-                color = config.colors.west;
-            } else {
-                direction = i.toString();
-            }
-            
-            // লেবেল আঁকুন
-            ctx.font = config.font;
-            ctx.fillStyle = color;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(direction, centerX + sin * (radius - config.majorTickLength - 20), centerY - cos * (radius - config.majorTickLength - 20));
-        } 
-        // ছোট টিক চিহ্ন
-        else {
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = config.colors.circle;
-            
-            ctx.beginPath();
-            ctx.moveTo(centerX + sin * (radius - config.minorTickLength), centerY - cos * (radius - config.minorTickLength));
-            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
-            ctx.stroke();
-        }
+        // টিক চিহ্ন
+        ctx.beginPath();
+        ctx.moveTo(centerX + sin * (radius - 20), centerY - cos * (radius - 20));
+        ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
+        ctx.strokeStyle = config.colors.circle;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // ডিগ্রী সংখ্যা
+        const x = centerX + sin * (radius - 55);
+        const y = centerY - cos * (radius - 55);
+        
+        ctx.font = '14px Arial';
+        ctx.fillStyle = config.colors.text;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(i.toString(), x, y);
     }
     
-    // কম্পাস সুই আঁকুন
+    // স্থির সুই আঁকুন (সর্বদা উত্তর দিকে নির্দেশ করে)
     ctx.beginPath();
-    ctx.moveTo(centerX, centerY - radius + 20);
-    ctx.lineTo(centerX - 10, centerY);
+    ctx.moveTo(centerX, centerY - radius + 25);
+    ctx.lineTo(centerX - 15, centerY);
     ctx.lineTo(centerX, centerY + 10);
-    ctx.lineTo(centerX + 10, centerY);
+    ctx.lineTo(centerX + 15, centerY);
     ctx.closePath();
     ctx.fillStyle = config.colors.needle;
     ctx.fill();
     
     // কেন্দ্রীয় বিন্দু আঁকুন
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+    ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
     ctx.fillStyle = config.colors.circle;
     ctx.fill();
     
-    // বর্তমান হেডিং প্রদর্শন
-    ctx.font = 'bold 18px Arial';
-    ctx.fillStyle = '#2c3e50';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    
+    // বর্তমান দিকনির্দেশ তথ্য প্রদর্শন
+    ctx.font = '16px Arial';
+    ctx.fillStyle = config.colors.text;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`হেডিং: ${Math.round(heading)}°`, centerX, centerY + 40);
+    ctx.fillText(`দিক: ${getDirectionName(heading)}`, centerX, centerY + 70);
+    ctx.fillText(`ডিগ্রী: ${Math.round(heading)}°`, centerX, centerY + 95);
 }
-
-// কম্পাস অনুমতি চাইতে বাটন তৈরি করুন
-const permissionButton = document.createElement('button');
-permissionButton.textContent = 'কম্পাস এক্সেস অনুমতি দিন';
-permissionButton.style.display = 'block';
-permissionButton.style.margin = '20px auto';
-permissionButton.style.padding = '10px 20px';
-permissionButton.style.background = '#3498db';
-permissionButton.style.color = 'white';
-permissionButton.style.border = 'none';
-permissionButton.style.borderRadius = '5px';
-permissionButton.style.cursor = 'pointer';
-permissionButton.style.fontSize = '16px';
-compasContainer.appendChild(permissionButton);
 
 // ডিভাইস ওরিয়েন্টেশন শনাক্ত করুন
-function initCompass() {
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS ডিভাইস
-        permissionButton.style.display = 'block';
-        permissionButton.onclick = function() {
-            DeviceOrientationEvent.requestPermission()
-                .then(response => {
-                    if (response === 'granted') {
-                        permissionButton.style.display = 'none';
-                        window.addEventListener('deviceorientation', handleOrientation);
-                        isCompassAvailable = true;
-                    }
-                })
-                .catch(console.error);
-        };
-    } else if ('ondeviceorientation' in window) {
-        // Android এবং অন্যান্য সাপোর্টেড ডিভাইস
-        permissionButton.style.display = 'none';
-        window.addEventListener('deviceorientation', handleOrientation);
-        isCompassAvailable = true;
-    } else {
-        // ডিভাইস ওরিয়েন্টেশন সাপোর্ট করে না
-        permissionButton.style.display = 'none';
-        showUnsupportedMessage();
-    }
-}
-
-// ওরিয়েন্টেশন ইভেন্ট হ্যান্ডলার
-function handleOrientation(event) {
-    if (event.alpha !== null) {
-        // ওয়েবকিট কম্পাস হেডিং নিন
-        currentHeading = event.alpha;
-        
-        // iOS ডিভাইসের জন্য কম্পাস হেডিং সামঞ্জস্য করুন
-        if (event.webkitCompassHeading !== undefined) {
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+        // কম্পাস হেডিং নিন (ডিগ্রীতে)
+        if (event.alpha !== null) {
+            // iOS এবং কিছু Android ডিভাইসের জন্য
+            currentHeading = event.alpha;
+        } else if (event.webkitCompassHeading !== undefined) {
+            // iOS WebKit-এর জন্য
             currentHeading = event.webkitCompassHeading;
-        } else {
-            // Android ডিভাইসের জন্য হেডিং সামঞ্জস্য করুন
-            currentHeading = 360 - event.alpha;
         }
         
         // কম্পাস আপডেট করুন
         drawCompass(currentHeading);
-    }
-}
-
-// সাপোর্ট না করলে বার্তা দেখান
-function showUnsupportedMessage() {
+    }, false);
+} else {
+    // ডিভাইস ওরিয়েন্টেশন সাপোর্ট করে না
     ctx.font = '18px Arial';
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = config.colors.text;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('কম্পাস আপনার ডিভাইসে সাপোর্ট করে না', centerX, centerY);
 }
 
-// প্রথমবার কম্পাস আঁকুন এবং ইভেন্ট লিসেনার সেট আপ করুন
+// প্রথমবার কম্পাস আঁকুন
 drawCompass(currentHeading);
-initCompass();
+
+// অনুমতি বাটন তৈরি করুন (iOS ডিভাইসের জন্য)
+if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    const permissionButton = document.createElement('button');
+    permissionButton.textContent = 'কম্পাস এক্সেস অনুমতি দিন';
+    permissionButton.style.marginTop = '20px';
+    permissionButton.style.padding = '10px 20px';
+    permissionButton.style.background = '#007bff';
+    permissionButton.style.color = 'white';
+    permissionButton.style.border = 'none';
+    permissionButton.style.borderRadius = '5px';
+    permissionButton.style.cursor = 'pointer';
+    permissionButton.style.fontSize = '16px';
+    
+    permissionButton.onclick = function() {
+        DeviceOrientationEvent.requestPermission()
+            .then(response => {
+                if (response === 'granted') {
+                    permissionButton.style.display = 'none';
+                    window.addEventListener('deviceorientation', function(event) {
+                        if (event.webkitCompassHeading !== undefined) {
+                            currentHeading = event.webkitCompassHeading;
+                            drawCompass(currentHeading);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Compass permission error:', error);
+            });
+    };
+    
+    compasContainer.appendChild(permissionButton);
+}
