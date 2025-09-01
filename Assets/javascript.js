@@ -171,99 +171,144 @@ installBtn.addEventListener('click', () => {
 
 
 // JavaScript code to create a dynamic Qibla compass inside #compasQ  ###################################################
-(function() {
-  const container = document.getElementById('compasQ');
-  if (!container) return;
-
-  container.style.position = 'relative';
-  container.style.width = '300px';
-  container.style.height = '300px';
-  container.style.margin = '20px auto';
-
-  // Compass background (circle + marks)
-  const compass = document.createElement('div');
-  compass.style.width = '100%';
-  compass.style.height = '100%';
-  compass.style.border = '6px solid #333';
-  compass.style.borderRadius = '50%';
-  compass.style.background = '#fdfdfd';
-  compass.style.position = 'relative';
-  compass.style.transition = 'transform 0.2s ease-out';
-  container.appendChild(compass);
-
-  // Add cardinal points (N, E, S, W)
-  const points = {N:'0%', E:'50% 0%', S:'50% 100%', W:'0% 50%'};
-  ['N','E','S','W'].forEach(p => {
-    const el = document.createElement('div');
-    el.innerText = p;
-    el.style.position = 'absolute';
-    el.style.fontWeight = 'bold';
-    el.style.color = '#222';
-    el.style.fontSize = '18px';
-    switch(p){
-      case 'N': el.style.top='5%'; el.style.left='50%'; el.style.transform='translateX(-50%)'; break;
-      case 'E': el.style.top='50%'; el.style.right='5%'; el.style.transform='translateY(-50%)'; break;
-      case 'S': el.style.bottom='5%'; el.style.left='50%'; el.style.transform='translateX(-50%)'; break;
-      case 'W': el.style.top='50%'; el.style.left='5%'; el.style.transform='translateY(-50%)'; break;
-    }
-    compass.appendChild(el);
-  });
-
-  // Needle
-  const needle = document.createElement('div');
-  needle.style.width = '12px';
-  needle.style.height = '140px';
-  needle.style.background = 'linear-gradient(to top, #555, red)';
-  needle.style.position = 'absolute';
-  needle.style.top = '50%';
-  needle.style.left = '50%';
-  needle.style.transformOrigin = 'bottom center';
-  needle.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-  compass.appendChild(needle);
-
-  // Kaaba icon (fixed West)
-  const qibla = document.createElement('div');
-  qibla.style.width = '50px';
-  qibla.style.height = '50px';
-  qibla.style.position = 'absolute';
-  qibla.style.top = '50%';
-  qibla.style.left = '5%'; // West
-  qibla.style.transform = 'translate(-50%, -50%)';
-  qibla.style.background = "url('https://cdn-icons-png.freepik.com/512/10171/10171102.png') no-repeat center/cover";
-  qibla.style.borderRadius = '50%';
-  compass.appendChild(qibla);
-
-  // Direction text
-  const directionText = document.createElement('p');
-  directionText.style.textAlign = 'center';
-  directionText.style.marginTop = '10px';
-  directionText.style.fontSize = '16px';
-  directionText.innerText = 'Loading...';
-  container.appendChild(directionText);
-
-  // Device orientation
-  if(window.DeviceOrientationEvent){
-    window.addEventListener('deviceorientation', function(e){
-      let alpha = e.alpha;
-      if(typeof alpha === 'number'){
-        compass.style.transform = `rotate(${-alpha}deg)`;
-        needle.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
-
-        let direction = "";
-        if(alpha >= 337.5 || alpha < 22.5) direction = "North";
-        else if(alpha >= 22.5 && alpha < 67.5) direction = "North-East";
-        else if(alpha >= 67.5 && alpha < 112.5) direction = "East";
-        else if(alpha >= 112.5 && alpha < 157.5) direction = "South-East";
-        else if(alpha >= 157.5 && alpha < 202.5) direction = "South";
-        else if(alpha >= 202.5 && alpha < 247.5) direction = "South-West";
-        else if(alpha >= 247.5 && alpha < 292.5) direction = "West";
-        else direction = "North-West";
-
-        directionText.innerText = "Direction: " + direction;
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    // Create the compass container
+    const compasQ = document.getElementById('compasQ');
+    
+    // Create compass elements
+    const compassContainer = document.createElement('div');
+    compassContainer.style.position = 'relative';
+    compassContainer.style.width = '300px';
+    compassContainer.style.height = '300px';
+    compassContainer.style.margin = '20px auto';
+    compassContainer.style.borderRadius = '50%';
+    compassContainer.style.backgroundColor = '#f0f0f0';
+    compassContainer.style.boxShadow = '0 0 15px rgba(0,0,0,0.2)';
+    
+    // Create compass face
+    const compassFace = document.createElement('div');
+    compassFace.style.position = 'absolute';
+    compassFace.style.width = '100%';
+    compassFace.style.height = '100%';
+    compassFace.style.borderRadius = '50%';
+    compassFace.style.background = 'radial-gradient(circle, #fff 60%, #eaeaea 100%)';
+    
+    // Create compass directions
+    const directions = ['N', 'E', 'S', 'W'];
+    directions.forEach((dir, index) => {
+        const direction = document.createElement('div');
+        direction.textContent = dir;
+        direction.style.position = 'absolute';
+        direction.style.fontWeight = 'bold';
+        direction.style.fontSize = '18px';
+        direction.style.color = dir === 'N' ? 'red' : '#333';
+        
+        // Position the directions
+        const angle = index * 90;
+        const rad = angle * Math.PI / 180;
+        const radius = 120;
+        const center = 150;
+        
+        direction.style.left = (center + Math.sin(rad) * radius - 10) + 'px';
+        direction.style.top = (center - Math.cos(rad) * radius - 10) + 'px';
+        
+        compassFace.appendChild(direction);
     });
-  } else {
-    directionText.innerText = "DeviceOrientation not supported";
-  }
-
-})();
+    
+    // Create qibla indicator
+    const qiblaIndicator = document.createElement('div');
+    qiblaIndicator.style.position = 'absolute';
+    qiblaIndicator.style.width = '4px';
+    qiblaIndicator.style.height = '40px';
+    qiblaIndicator.style.backgroundColor = 'green';
+    qiblaIndicator.style.left = '50%';
+    qiblaIndicator.style.top = '50%';
+    qiblaIndicator.style.transformOrigin = 'bottom center';
+    qiblaIndicator.style.transform = 'translate(-50%, -100%)';
+    qiblaIndicator.style.zIndex = '10';
+    
+    // Create compass needle
+    const compassNeedle = document.createElement('div');
+    compassNeedle.style.position = 'absolute';
+    compassNeedle.style.width = '4px';
+    compassNeedle.style.height = '120px';
+    compassNeedle.style.backgroundColor = 'red';
+    compassNeedle.style.left = '50%';
+    compassNeedle.style.top = '50%';
+    compassNeedle.style.transformOrigin = 'bottom center';
+    compassNeedle.style.transform = 'translate(-50%, -100%)';
+    
+    // Create center pin
+    const centerPin = document.createElement('div');
+    centerPin.style.position = 'absolute';
+    centerPin.style.width = '20px';
+    centerPin.style.height = '20px';
+    centerPin.style.backgroundColor = '#333';
+    centerPin.style.borderRadius = '50%';
+    centerPin.style.left = '50%';
+    centerPin.style.top = '50%';
+    centerPin.style.transform = 'translate(-50%, -50%)';
+    centerPin.style.zIndex = '20';
+    centerPin.style.boxShadow = '0 0 5px rgba(0,0,0,0.5)';
+    
+    // Create degree markers
+    for (let i = 0; i < 36; i++) {
+        const marker = document.createElement('div');
+        const angle = i * 10;
+        const rad = angle * Math.PI / 180;
+        const length = i % 9 === 0 ? 20 : 10;
+        const width = i % 9 === 0 ? 3 : 2;
+        const color = i % 9 === 0 ? '#333' : '#666';
+        
+        marker.style.position = 'absolute';
+        marker.style.width = width + 'px';
+        marker.style.height = length + 'px';
+        marker.style.backgroundColor = color;
+        marker.style.left = '50%';
+        marker.style.top = '15px';
+        marker.style.transformOrigin = 'bottom center';
+        marker.style.transform = `translate(-50%, 0%) rotate(${angle}deg)`;
+        
+        compassFace.appendChild(marker);
+    }
+    
+    // Create info display
+    const infoDisplay = document.createElement('div');
+    infoDisplay.style.textAlign = 'center';
+    infoDisplay.style.marginTop = '20px';
+    infoDisplay.style.fontSize = '18px';
+    infoDisplay.innerHTML = 'Qibla Direction: Calculating...';
+    
+    // Assemble the compass
+    compassFace.appendChild(qiblaIndicator);
+    compassFace.appendChild(compassNeedle);
+    compassFace.appendChild(centerPin);
+    compassContainer.appendChild(compassFace);
+    compasQ.appendChild(compassContainer);
+    compasQ.appendChild(infoDisplay);
+    
+    // Simulate compass functionality
+    // In a real implementation, you would use device orientation API
+    let currentHeading = 0;
+    const qiblaAngle = 45; // Example angle - this would be calculated based on user's location
+    
+    function updateCompass() {
+        // Simulate compass movement
+        currentHeading = (currentHeading + 1) % 360;
+        
+        // Rotate the needle
+        compassNeedle.style.transform = `translate(-50%, -100%) rotate(${currentHeading}deg)`;
+        
+        // Calculate the angle to Qibla
+        const angleToQibla = (qiblaAngle - currentHeading + 360) % 360;
+        
+        // Update the info display
+        infoDisplay.innerHTML = `Heading: ${currentHeading}° | Qibla: ${angleToQibla}°`;
+        
+        // Request the next animation frame
+        requestAnimationFrame(updateCompass);
+    }
+    
+    // Start the compass animation
+    updateCompass();
+});
