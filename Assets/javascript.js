@@ -172,149 +172,195 @@ installBtn.addEventListener('click', () => {
 
 // JavaScript code to create a dynamic Qibla compass inside #compasQ  ###################################################
 
-// কম্পাস কনফিগারেশন
-const config = {
-    size: 300,
-    circleWidth: 10,
-    majorTickLength: 20,
-    minorTickLength: 10,
-    font: '16px Arial',
-    colors: {
-        background: '#f5f5f5',
-        circle: '#333',
-        needle: 'red',
-        north: '#d00',
-        east: '#00d',
-        south: '#0a0',
-        west: '#d60',
-        text: '#333'
+
+(() => {
+  const mountId = "compasQ"; // চাইলে বদলাতে পারেন
+  const root = document.getElementById(mountId);
+  if (!root) { console.error("#" + mountId + " not found"); return; }
+
+  // ----- Inject minimal styles & structure via JS -----
+  const style = document.createElement("style");
+  style.textContent = `
+    .cmp-wrap{position:relative; width:260px; height:260px; margin:16px auto; user-select:none; touch-action:none; font-family:system-ui,Segoe UI,Roboto,Arial;}
+    .cmp-dial{position:absolute; inset:0; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,.15) inset, 0 6px 20px rgba(0,0,0,.1); background:radial-gradient(circle at 50% 45%, #fff, #f3f4f6 60%, #e5e7eb); border:8px solid #e5e7eb;}
+    .cmp-ring{position:absolute; inset:16px; border-radius:999px; border:2px dashed #c7cdd6;}
+    .cmp-card{position:absolute; left:50%; top:10px; transform:translateX(-50%); font-weight:700; letter-spacing:.08em;}
+    .cmp-card.n{top:12px}
+    .cmp-card.s{top:auto; bottom:12px}
+    .cmp-card.e{left:auto; right:12px; top:50%; transform:translateY(-50%)}
+    .cmp-card.w{left:12px; top:50%; transform:translateY(-50%)}
+    .cmp-ticks{position:absolute; inset:22px; border-radius:999px}
+    .cmp-ticks div{position:absolute; left:50%; top:0; width:2px; height:12px; background:#9aa3af; transform-origin:50% 108px; opacity:.8}
+    .cmp-ticks div.major{height:18px; background:#6b7280}
+    .cmp-needle{position:absolute; left:50%; top:50%; width:0; height:0; transform-origin:50% 50%;}
+    .cmp-needle .north, .cmp-needle .south{position:absolute; left:-8px; width:16px; height:110px; clip-path:polygon(50% 0, 100% 100%, 0 100%); transform:translate(-50%,-100%);}
+    .cmp-needle .north{top:-6px; background:linear-gradient(#ef4444, #b91c1c)}
+    .cmp-needle .south{top:6px; transform:rotate(180deg) translate(50%, 0); background:linear-gradient(#1f2937, #000)}
+    .cmp-cap{position:absolute; left:50%; top:50%; width:18px; height:18px; border-radius:999px; transform:translate(-50%, -50%); background:#fff; box-shadow:0 0 0 2px #111 inset, 0 1px 6px rgba(0,0,0,.4)}
+    .cmp-readout{margin-top:280px; text-align:center; font-size:14px; color:#111}
+    .cmp-badge{display:inline-block; font-variant-numeric:tabular-nums; background:#f3f4f6; padding:.35rem .6rem; border-radius:.75rem; box-shadow: inset 0 0 0 1px #e5e7eb}
+    .cmp-btn{display:inline-block; margin-top:8px; padding:.55rem .9rem; border-radius:.75rem; background:#111; color:#fff; cursor:pointer; font-size:14px}
+    .cmp-note{font-size:12px; color:#6b7280; margin-top:6px}
+    @media (max-width:360px){ .cmp-wrap{width:200px; height:200px} .cmp-readout{margin-top:216px} }
+  `;
+  document.head.appendChild(style);
+
+  const wrap = document.createElement("div");
+  wrap.className = "cmp-wrap";
+  wrap.innerHTML = `
+    <div class="cmp-dial"></div>
+    <div class="cmp-ring"></div>
+    <div class="cmp-card n">N</div>
+    <div class="cmp-card e">E</div>
+    <div class="cmp-card s">S</div>
+    <div class="cmp-card w">W</div>
+    <div class="cmp-ticks"></div>
+    <div class="cmp-needle" aria-hidden="true">
+      <div class="north"></div>
+      <div class="south"></div>
+    </div>
+    <div class="cmp-cap"></div>
+    <div class="cmp-readout">
+      <div><span class="cmp-badge" id="cmpDeg">--.-°</span> <span class="cmp-badge" id="cmpDir">---</span></div>
+      <div class="cmp-note" id="cmpNote">Enable motion/compass permission to start.</div>
+      <div><button class="cmp-btn" id="cmpBtn" type="button" style="display:none">Enable Compass</button></div>
+    </div>
+  `;
+  root.appendChild(wrap);
+
+  // Degree ticks (every 10°, bold at 0/90/180/270)
+  const ticks = wrap.querySelector(".cmp-ticks");
+  for (let i = 0; i < 360; i += 10) {
+    const t = document.createElement("div");
+    t.style.transform = `rotate(${i}deg) translateX(-1px)`;
+    if (i % 90 === 0) t.classList.add("major");
+    ticks.appendChild(t);
+  }
+
+  const needle = wrap.querySelector(".cmp-needle");
+  const degEl  = wrap.querySelector("#cmpDeg");
+  const dirEl  = wrap.querySelector("#cmpDir");
+  const noteEl = wrap.querySelector("#cmpNote");
+  const btnEl  = wrap.querySelector("#cmpBtn");
+
+  // Heading helpers
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  const toDir = d => dirs[Math.round(d/22.5) % 16];
+  const norm = d => (d % 360 + 360) % 360;
+
+  // Screen orientation compensation
+  const screenAngle = () => {
+    const a = (screen.orientation && typeof screen.orientation.angle === "number")
+      ? screen.orientation.angle
+      : (window.orientation || 0);
+    return Number(a) || 0; // 0, 90, 180, 270
+  };
+
+  // Simple low-pass filter for smoother motion
+  let smooth = null;
+  const smoothen = (val) => {
+    const alpha = 0.15; // higher = more responsive, lower = smoother
+    if (smooth === null) smooth = val;
+    // handle wrap-around (e.g., 359 -> 1)
+    const diff = ((val - smooth + 540) % 360) - 180;
+    smooth = norm(smooth + diff * alpha);
+    return smooth;
+  };
+
+  // Compute heading from generic DeviceOrientation (alpha, beta, gamma) if needed
+  // (Fallback when no webkitCompassHeading; assumes alpha=0 points North in absolute mode)
+  const computeHeadingFromAlpha = (alpha, absoluteFlag) => {
+    if (alpha == null) return null;
+    // Many browsers report alpha clockwise from device top. We want "compass heading" clockwise from North.
+    // For most cases, heading ≈ alpha. Some prefer 360 - alpha; we’ll compensate using a quick sanity check by testing both.
+    // Choose 360 - alpha so that increasing alpha when turning right yields increasing heading clockwise.
+    let heading = 360 - alpha;
+    heading = norm(heading - screenAngle()); // adjust for screen rotation
+    return absoluteFlag === false ? null : norm(heading);
+  };
+
+  // Permission flow (iOS 13+ requires user gesture)
+  const needsPermission =
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof DeviceOrientationEvent.requestPermission === "function";
+
+  const secureContext = location.protocol === "https:" || location.hostname === "localhost";
+
+  const start = async () => {
+    if (!secureContext) {
+      noteEl.textContent = "Compass needs HTTPS or localhost.";
+      btnEl.style.display = "none";
+      return;
     }
-};
-
-// কম্পাস কন্টেইনার তৈরি করুন
-const compasContainer = document.getElementById('compasQ');
-const canvas = document.createElement('canvas');
-canvas.width = config.size;
-canvas.height = config.size;
-canvas.style.display = 'block';
-canvas.style.margin = '0 auto';
-compasContainer.appendChild(canvas);
-
-const ctx = canvas.getContext('2d');
-const centerX = canvas.width / 2;
-const centerY = canvas.height / 2;
-const radius = (canvas.width / 2) - config.circleWidth;
-
-let currentHeading = 0;
-
-// কম্পাস আঁকুন
-function drawCompass(heading) {
-    // ক্যানভাস পরিষ্কার করুন
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // বাইরের বৃত্ত আঁকুন
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius + config.circleWidth, 0, 2 * Math.PI);
-    ctx.fillStyle = config.colors.background;
-    ctx.fill();
-    ctx.strokeStyle = config.colors.circle;
-    ctx.lineWidth = config.circleWidth;
-    ctx.stroke();
-    
-    // ডিগ্রী এবং দিকনির্দেশ আঁকুন
-    for (let i = 0; i < 360; i += 5) {
-        const angle = (i - heading) * Math.PI / 180;
-        const sin = Math.sin(angle);
-        const cos = Math.cos(angle);
-        
-        // প্রধান টিক চিহ্ন (প্রতি 30 ডিগ্রী)
-        if (i % 30 === 0) {
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = config.colors.circle;
-            
-            // টিক চিহ্ন আঁকুন
-            ctx.beginPath();
-            ctx.moveTo(centerX + sin * (radius - config.majorTickLength), centerY - cos * (radius - config.majorTickLength));
-            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
-            ctx.stroke();
-            
-            // দিকনির্দেশ লেবেল
-            let direction = '';
-            let color = config.colors.text;
-            
-            if (i === 0) {
-                direction = 'N';
-                color = config.colors.north;
-            } else if (i === 90) {
-                direction = 'E';
-                color = config.colors.east;
-            } else if (i === 180) {
-                direction = 'S';
-                color = config.colors.south;
-            } else if (i === 270) {
-                direction = 'W';
-                color = config.colors.west;
-            } else {
-                direction = i.toString();
-            }
-            
-            // লেবেল আঁকুন
-            ctx.font = config.font;
-            ctx.fillStyle = color;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(direction, centerX + sin * (radius - config.majorTickLength - 20), centerY - cos * (radius - config.majorTickLength - 20));
-        } 
-        // ছোট টিক চিহ্ন
-        else {
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = config.colors.circle;
-            
-            ctx.beginPath();
-            ctx.moveTo(centerX + sin * (radius - config.minorTickLength), centerY - cos * (radius - config.minorTickLength));
-            ctx.lineTo(centerX + sin * radius, centerY - cos * radius);
-            ctx.stroke();
+    if (needsPermission) {
+      try {
+        const res = await DeviceOrientationEvent.requestPermission();
+        if (res !== "granted") {
+          noteEl.textContent = "Permission denied. Tap to try again.";
+          btnEl.style.display = "";
+          return;
         }
+      } catch {
+        noteEl.textContent = "Permission request failed. Tap to retry.";
+        btnEl.style.display = "";
+        return;
+      }
     }
-    
-    // কম্পাস সুই আঁকুন
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY - radius + 20);
-    ctx.lineTo(centerX - 10, centerY);
-    ctx.lineTo(centerX, centerY + 10);
-    ctx.lineTo(centerX + 10, centerY);
-    ctx.closePath();
-    ctx.fillStyle = config.colors.needle;
-    ctx.fill();
-    
-    // কেন্দ্রীয় বিন্দু আঁকুন
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = config.colors.circle;
-    ctx.fill();
-}
+    subscribe();
+  };
 
-// ডিভাইস ওরিয়েন্টেশন শনাক্ত করুন
-if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', function(event) {
-        // কম্পাস হেডিং নিন (ডিগ্রীতে)
-        if (event.alpha !== null) {
-            currentHeading = event.alpha; // iOS এবং কিছু Android ডিভাইস
-        } else if (event.webkitCompassHeading !== undefined) {
-            currentHeading = event.webkitCompassHeading; // iOS WebKit
-        }
-        
-        // কম্পাস আপডেট করুন
-        drawCompass(currentHeading);
-    }, false);
-} else {
-    // ডিভাইস ওরিয়েন্টেশন সাপোর্ট করে না
-    ctx.font = '20px Arial';
-    ctx.fillStyle = config.colors.text;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('কম্পাস আপনার ডিভাইসে সাপোর্ট করে না', centerX, centerY);
-}
+  const onReading = (deg) => {
+    const sm = smoothen(norm(deg));
+    needle.style.transform = `translate(-50%, -50%) rotate(${sm}deg)`;
+    degEl.textContent = sm.toFixed(1) + "°";
+    dirEl.textContent = toDir(sm);
+  };
 
-// প্রথমবার কম্পাস আঁকুন
-drawCompass(currentHeading);
+  let subscribed = false;
+
+  const handleDO = (e) => {
+    // iOS Safari provides webkitCompassHeading (0=N, clockwise)
+    let heading = (typeof e.webkitCompassHeading === "number") ? e.webkitCompassHeading : null;
+
+    if (heading == null) {
+      // Some browsers provide "compassHeading" on absolute events
+      heading = (typeof e.compassHeading === "number") ? e.compassHeading : null;
+    }
+
+    if (heading == null) {
+      // Try computing from alpha (absolute orientation)
+      heading = computeHeadingFromAlpha(e.alpha, e.absolute);
+    }
+
+    if (heading != null && isFinite(heading)) {
+      noteEl.textContent = "Pointing to magnetic North.";
+      onReading(heading);
+    } else {
+      noteEl.textContent = "No compass data available on this device/browser.";
+    }
+  };
+
+  const subscribe = () => {
+    if (subscribed) return;
+    subscribed = true;
+    noteEl.textContent = "Calibrating… move your phone in a ∞ pattern.";
+    // Prefer 'deviceorientationabsolute' if available
+    const handler = (e) => handleDO(e);
+    // Some browsers fire both; keep one listener each, handler is tolerant
+    window.addEventListener("deviceorientationabsolute", handler, true);
+    window.addEventListener("deviceorientation", handler, true);
+    // Update when screen rotates so heading remains true to world
+    (screen.orientation || {}).addEventListener?.("change", () => {
+      smooth = null; // reset smoothing to avoid jump
+    });
+  };
+
+  // Show button only if permission API exists; otherwise start immediately
+  if (needsPermission) {
+    btnEl.style.display = "";
+    btnEl.addEventListener("click", start, { passive:true });
+  } else {
+    start();
+  }
+})();
+
