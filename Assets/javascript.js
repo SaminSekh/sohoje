@@ -274,10 +274,10 @@ installBtn.addEventListener('click', () => {
     
     // Create direction markers
     const directions = [
-        { label: 'N', angle: 0, color: '#e74c3c' },
-        { label: 'E', angle: 90, color: '#333' },
-        { label: 'S', angle: 180, color: '#333' },
-        { label: 'W', angle: 270, color: '#333' }
+        { label: 'পূর্ব', angle: 0, color: '#e74c3c' },
+        { label: 'দক্ষিন', angle: 90, color: '#333' },
+        { label: 'পশ্চিম', angle: 180, color: '#333' },
+        { label: 'উত্তর', angle: 270, color: '#333' }
     ];
     
     directions.forEach(dir => {
@@ -310,7 +310,7 @@ installBtn.addEventListener('click', () => {
     
     // Create permission button
     const permissionButton = document.createElement('button');
-    permissionButton.textContent = 'Enable Location Access';
+    permissionButton.textContent = 'লোকেশন এক্সেস দিন';
     permissionButton.style.background = '#3498db';
     permissionButton.style.color = 'white';
     permissionButton.style.border = 'none';
@@ -336,7 +336,7 @@ installBtn.addEventListener('click', () => {
     statusMessage.style.borderRadius = '8px';
     statusMessage.style.background = '#fff3cd';
     statusMessage.style.color = '#856404';
-    statusMessage.textContent = 'Please allow location access to find Qibla direction';
+    statusMessage.textContent = 'অনুগ্রহ করে নিচে আপনার লোকেশন এনাবেল করুন দিকনির্ণয় করতে';
     
     // Assemble the compass
     compassFace.appendChild(qiblaIndicator);
@@ -419,7 +419,7 @@ installBtn.addEventListener('click', () => {
     
     // Request location permission
     function requestLocation() {
-        statusMessage.textContent = "Detecting your location...";
+        statusMessage.textContent = "দিকনির্ণয় করা হচ্ছে..";
         statusMessage.style.background = "#d4edda";
         statusMessage.style.color = "#155724";
         
@@ -435,29 +435,29 @@ installBtn.addEventListener('click', () => {
                     
                     // Calculate distance to Mecca
                     const distance = calculateDistance(lat, lng);
-                    infoDisplay.innerHTML = `Qibla: ${Math.round(qiblaAngle)}° | Distance: ${Math.round(distance)} km`;
+                    infoDisplay.innerHTML = `কিবলা: ${Math.round(qiblaAngle)}° | দূরত্ব: ${Math.round(distance)} km`;
                     
-                    statusMessage.textContent = "Location detected successfully!";
+                    statusMessage.textContent = "আপনার দিকনির্ণয় সফল হয়েছে!";
                     
                     // Start listening to device orientation
                     if (window.DeviceOrientationEvent) {
                         window.addEventListener('deviceorientation', handleOrientation);
-                        statusMessage.textContent += " Move your device to see the compass update.";
+                        statusMessage.textContent += " আপনার মোবাইলটি ঘোরান লোকেশন আপডেট করতে";
                     } else {
-                        statusMessage.textContent = "Device orientation not supported on this device.";
+                        statusMessage.textContent = "আপনার মোবাইল সাপোর্ট করছে না";
                         statusMessage.style.background = "#f8d7da";
                         statusMessage.style.color = "#721c24";
                     }
                 },
                 function(error) {
-                    statusMessage.textContent = "Error getting location: " + error.message;
+                    statusMessage.textContent = "লোকেশন এরর: " + error.message;
                     statusMessage.style.background = "#f8d7da";
                     statusMessage.style.color = "#721c24";
                 },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         } else {
-            statusMessage.textContent = "Geolocation is not supported by this browser.";
+            statusMessage.textContent = "লোকেশন এই ব্রাওসরে সাপোর্ট করছে না";
             statusMessage.style.background = "#f8d7da";
             statusMessage.style.color = "#721c24";
         }
@@ -468,7 +468,7 @@ installBtn.addEventListener('click', () => {
     
     // Check if the device supports orientation events
     if (!window.DeviceOrientationEvent) {
-        statusMessage.textContent = "Sorry, your device doesn't support compass functionality.";
+        statusMessage.textContent = "দুঃখিত , আপনার ডিভাইস এর কম্পাস ঠিক কাজ করছে না";
         statusMessage.style.background = "#f8d7da";
         statusMessage.style.color = "#721c24";
     }
