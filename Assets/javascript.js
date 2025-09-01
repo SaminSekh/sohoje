@@ -35,12 +35,12 @@ menuCloseBtns.forEach(btn => {
     });
 
 
-    // লেখা চলা 
+    // লেখা চলা   ###################################################
 
 let runningFont = document.getElementById("runFont")
 runningFont.innerText = " রাব্বি জিদনি ইলমা 💎 রাব্বি জিদনি ইলমা 💎 রাব্বি জিদনি ইলমা 💎 আল্লাহই যথেষ্ট : ‘হাসবুনাল্লাহু ওয়া নিমাল ওয়াকিল, নিমাল মাওলা ওয়া নিমান নাসির।’ 💎 ";
 
-// Accessible Accordion
+// Accessible Accordion ###################################################
 const headers = document.querySelectorAll('.accordion-header');
 
 headers.forEach((btn) => {
@@ -68,7 +68,7 @@ function togglePanel(btn){
       }
     }
 
-// শেয়ার কন্টেন্ট 
+// শেয়ার কন্টেন্ট  ###################################################
 
 document.addEventListener("DOMContentLoaded", function() {
   const items = document.querySelectorAll(".dua-card");
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
-   // idenhi ivdi balvisi likki 10 arba 
+   // idenhi ivdi balvisi likki 10 arba   ###################################################
 
 var clickCount = 0;
 var clickDiv = document.getElementById("clickDiv");
@@ -131,7 +131,7 @@ if (!clickDiv || !hiddenDiv) {
   });
 }
 
-//app shortcut
+          //app shortcut          ###################################################
 // Service Worker রেজিস্টার
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("../sw.js")
@@ -167,3 +167,103 @@ installBtn.addEventListener('click', () => {
   });
 });
 
+
+
+
+// JavaScript code to create a dynamic Qibla compass inside #compasQ  ###################################################
+(function() {
+  const container = document.getElementById('compasQ');
+  if (!container) return;
+
+  container.style.position = 'relative';
+  container.style.width = '300px';
+  container.style.height = '300px';
+  container.style.margin = '20px auto';
+
+  // Compass background (circle + marks)
+  const compass = document.createElement('div');
+  compass.style.width = '100%';
+  compass.style.height = '100%';
+  compass.style.border = '6px solid #333';
+  compass.style.borderRadius = '50%';
+  compass.style.background = '#fdfdfd';
+  compass.style.position = 'relative';
+  compass.style.transition = 'transform 0.2s ease-out';
+  container.appendChild(compass);
+
+  // Add cardinal points (N, E, S, W)
+  const points = {N:'0%', E:'50% 0%', S:'50% 100%', W:'0% 50%'};
+  ['N','E','S','W'].forEach(p => {
+    const el = document.createElement('div');
+    el.innerText = p;
+    el.style.position = 'absolute';
+    el.style.fontWeight = 'bold';
+    el.style.color = '#222';
+    el.style.fontSize = '18px';
+    switch(p){
+      case 'N': el.style.top='5%'; el.style.left='50%'; el.style.transform='translateX(-50%)'; break;
+      case 'E': el.style.top='50%'; el.style.right='5%'; el.style.transform='translateY(-50%)'; break;
+      case 'S': el.style.bottom='5%'; el.style.left='50%'; el.style.transform='translateX(-50%)'; break;
+      case 'W': el.style.top='50%'; el.style.left='5%'; el.style.transform='translateY(-50%)'; break;
+    }
+    compass.appendChild(el);
+  });
+
+  // Needle
+  const needle = document.createElement('div');
+  needle.style.width = '12px';
+  needle.style.height = '140px';
+  needle.style.background = 'linear-gradient(to top, #555, red)';
+  needle.style.position = 'absolute';
+  needle.style.top = '50%';
+  needle.style.left = '50%';
+  needle.style.transformOrigin = 'bottom center';
+  needle.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+  compass.appendChild(needle);
+
+  // Kaaba icon (fixed West)
+  const qibla = document.createElement('div');
+  qibla.style.width = '50px';
+  qibla.style.height = '50px';
+  qibla.style.position = 'absolute';
+  qibla.style.top = '50%';
+  qibla.style.left = '5%'; // West
+  qibla.style.transform = 'translate(-50%, -50%)';
+  qibla.style.background = "url('https://cdn-icons-png.freepik.com/512/10171/10171102.png') no-repeat center/cover";
+  qibla.style.borderRadius = '50%';
+  compass.appendChild(qibla);
+
+  // Direction text
+  const directionText = document.createElement('p');
+  directionText.style.textAlign = 'center';
+  directionText.style.marginTop = '10px';
+  directionText.style.fontSize = '16px';
+  directionText.innerText = 'Loading...';
+  container.appendChild(directionText);
+
+  // Device orientation
+  if(window.DeviceOrientationEvent){
+    window.addEventListener('deviceorientation', function(e){
+      let alpha = e.alpha;
+      if(typeof alpha === 'number'){
+        compass.style.transform = `rotate(${-alpha}deg)`;
+        needle.style.transform = `translate(-50%, -50%) rotate(${alpha}deg)`;
+
+        let direction = "";
+        if(alpha >= 337.5 || alpha < 22.5) direction = "North";
+        else if(alpha >= 22.5 && alpha < 67.5) direction = "North-East";
+        else if(alpha >= 67.5 && alpha < 112.5) direction = "East";
+        else if(alpha >= 112.5 && alpha < 157.5) direction = "South-East";
+        else if(alpha >= 157.5 && alpha < 202.5) direction = "South";
+        else if(alpha >= 202.5 && alpha < 247.5) direction = "South-West";
+        else if(alpha >= 247.5 && alpha < 292.5) direction = "West";
+        else direction = "North-West";
+
+        directionText.innerText = "Direction: " + direction;
+      }
+    });
+  } else {
+    directionText.innerText = "DeviceOrientation not supported";
+  }
+
+})();
