@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>সহজে ডট ইন</title>
+
+    <!-- Meta Description -->
+    <meta
+      name="description"
+      content="ইসলামিক শিক্ষা ও দোয়ার পোর্টাল। এখানে নামাজ, তাসবিহ, দুরুদ, যিকির ও ইসলামিক হাদিস সম্পর্কিত তথ্য পাবেন। প্রতিদিনের দোয়া ও নিয়মাবলী সহ।"
+    />
+
+    <!-- Meta Keywords -->
+    <meta
+      name="keywords"
+      content="ইসলাম, নামাজ, দোয়া, যিকির, দরুদ, ইসলামিক শিক্ষা, হাদিস, কুরআন, মুসুলিম, ইসলামী পেজ"
+    />
+
+    <!-- Author -->
+    <meta name="author" content="আপনার নাম / আপনার ওয়েবসাইটের নাম" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Open Graph / Social Media Sharing -->
+    <meta property="og:title" content="ইসলামিক শিক্ষা ও দোয়া" />
+    <meta
+      property="og:description"
+      content="নামাজ, দুরুদ, যিকির ও ইসলামিক তথ্য সহ একটি পূর্ণাঙ্গ ইসলামিক পোর্টাল।"
+    />
+    <meta property="og:image" content="https://yourwebsite.com/image.jpg" />
+    <meta property="og:url" content="https://yourwebsite.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ইসলামিক শিক্ষা ও দোয়া" />
+    <meta
+      name="twitter:description"
+      content="নামাজ, দুরুদ, যিকির ও ইসলামিক তথ্য সহ একটি পূর্ণাঙ্গ ইসলামিক পোর্টাল।"
+    />
+    <meta name="twitter:image" content="https://yourwebsite.com/image.jpg" />
+
+    <!-- Google Fonts (Arabic + Bengali + UI) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+Bengali:wght@300;400;500;700&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../Assets/style.css" />
+    <link rel="manifest" href="../manifest.json" />
+    <meta name="theme-color" content="#0d6efd" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar" aria-label="বাম মেনু">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="title">ইসলামিক জ্ঞানকোষ</div>
+        </div>
+        <nav class="menu">
+          <a href="../index.html">হোম</a>
+          <a href="namaj.html">নামাজ</a>
+          <a href="amal.html">আমল</a>
+          <a href="pap.html">পাপকর্ম</a>
+          <a href="Quran.html">কুরআন</a>
+          <a href="Hadis.html">হাদিস</a>
+          <a href="jibon.html">দৈনন্দিন জীবন</a>
+          <a href="Ramadan.html">রমজান</a>
+          <a href="gaja.html" id="activePage">গাজা</a>
+          <a href="contact.html">যোগাযোগ</a>
+        </nav>
+        <div style="margin-top: auto"></div>
+        <div class="small" id="installBtn">
+          <i
+            class="fa fa-android"
+            style="font-size: 20px; color: rgb(17, 179, 2); margin-right: 5px"
+          ></i
+          >অ্যাপ ডাউনলোড
+        </div>
+        <br />
+        <div class="menuClose">বন্ধ করুন</div>
+      </aside>
+
+      <!-- Main -->
+      <main>
+        <!-- Top Banner / Topbar -->
+        <header class="topbar">
+          <div class="top-left">
+            <button class="hamburger" id="menuBtn" aria-label="টোগল মেনু">
+              <span></span>
+            </button>
+            <div class="banner">
+              <svg
+                class="moon-star"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12.5 3a8.5 8.5 0 1 0 8 11.3A7 7 0 1 1 12.5 3Z"
+                  stroke="white"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M18.5 5l.6 1.7L20.8 7l-1.5 1.2.5 1.8-1.6-.9-1.5.9.4-1.8L16 7l1.7-.3.8-1.7Z"
+                  fill="white"
+                />
+              </svg>
+              <div>বিসমিল্লাহির রাহমানির রাহিম</div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" id="themeBtn" aria-label="লাইট/ডার্ক মোড">
+              🌓 <span id="themeLabel">ডার্ক</span>
+            </button>
+          </div>
+        </header>
+
+        <section class="content" id="home">
+          <div class="container">
+            <div class="topMenu">
+              <marquee id="runFont"></marquee>
+              <ul class="topBar">
+                <li><a href="../index.html">হোম</a></li>
+                <li><a href="namaj.html">নামাজ</a></li>
+                <li><a href="amal.html">আমল</a></li>
+                <li><a href="pap.html">পাপকর্ম</a></li>
+                <li><a href="Quran.html">কুরআন</a></li>
+                <li><a href="Hadis.html">হাদিস</a></li>
+                <li><a href="jibon.html">দৈনন্দিন জীবন</a></li>
+                <li><a href="Ramadan.html">রমজান</a></li>
+                <li><a href="#">গাজা</a></li>
+                <li><a href="contact.html">যোগাযোগ</a></li>
+              </ul>
+            </div>
+
+            <div class="hero">
+              <h1>গাজা আজ নির্যাতিত মুসলিম উম্মাহর এক রক্তাক্ত ভূমি।</h1>
+              <p>
+                এখানকার মানুষ দৃঢ় ঈমান নিয়ে সংগ্রাম করে যাচ্ছে। তারা খাদ্য,
+                পানি, ওষুধের অভাবে কষ্ট পেলেও আল্লাহর উপর পূর্ণ ভরসা রেখে
+                স্বাধীনতার জন্য লড়ছে। গাজার প্রতিটি শিশু, নারী ও বৃদ্ধ আমাদের
+                দোয়া ও সমর্থনের অধিকারী। একজন মুসলিম হিসেবে আমাদের কর্তব্য হলো
+                তাদের জন্য দোয়া করা, মানবিক সহায়তায় এগিয়ে আসা এবং অন্যায়ের
+                বিরুদ্ধে সচেতনতা ছড়িয়ে দেওয়া। গাজার মানুষের ধৈর্য ও ঈমান আমাদের
+                জন্য এক বড় শিক্ষা।
+              </p>
+            </div>
+
+            <div>
+              <h1>💔 মানবতার কণ্ঠস্বর</h1>
+              <p>
+                গাজায় পুরো এলাকা ধ্বংসস্তূপে পরিণত হয়েছে। পরিবারগুলো
+                ধ্বংসস্তূপের মধ্য দিয়ে হেঁটে তাদের বাড়ি, স্কুল ও জীবনের
+                অবশিষ্ট খুঁজছে। ক্রমাগত বোমাবর্ষণের ভয়, নিরাপদ আশ্রয়ের অভাব
+                এবং এই চরম পরিস্থিতিতে শিশুদের যত্ন নেওয়ার দায়িত্ব মায়েদের
+                জন্য অকল্পনীয়। কাঁপা কাঁপা হাতে তারা সন্তানদের কোলে তুলে ধরে
+                প্রার্থনা করছেন যে মৌলিক ওষুধ—ইনসুলিন, অ্যান্টিবায়োটিক, শিশুদের
+                খাবার—অবরোধ পেরিয়ে পৌঁছাতে পারবে। <br />
+                <br />
+
+                জ্বালানি বা বিদ্যুৎ না থাকায় হাসপাতালগুলো মোমবাতির আলোয়
+                পরিচালিত হচ্ছে। রাতের অন্ধকারে গুলির শব্দ ভঙ্গুর শান্তিকে ছিন্ন
+                করছে। বৃদ্ধ পুরুষ ও মহিলারা, যারা একসময় সমাজের স্তম্ভ ছিলেন,
+                ধ্বংসের স্মৃতিতে আচ্ছন্ন হয়ে খালি আশ্রয়কেন্দ্রে বসে আছেন।
+                সাহায্যকর্মীরা জানাচ্ছেন, শিশুরা ক্লান্ত নয়, ক্ষুধায় ঘুমিয়ে
+                পড়ছে। এই মানসিক ও শারীরিক কষ্টের বোঝা আমাদের সকলেরই ভাগাভাগি
+                করে নেওয়া উচিত।
+              </p>
+            </div>
+
+            <div class="gajacont">
+              <h1>📊 সংখ্যার সংকট (গাজা, ২০২৫)</h1>
+              <ul>
+                <li>
+                  <strong
+                    >২০২৩ সালের অক্টোবর থেকে ২০২৫ পর্যন্ত ৬২,০০০-এরও বেশি
+                    ফিলিস্তিনি নিহত হয়েছে, যার মধ্যে ৮৩% বেসামরিক নাগরিক। আহতের
+                    সংখ্যা ১,৫৭,০০০-এরও বেশি।</strong
+                  ><br />
+                  <a
+                    href="https://www.aljazeera.com/news/2025/8/21/israeli-data-shows-83-percent-of-gaza-war-dead-are-civilians-report?utm_source=chatgpt.com"
+                    target="_blank"
+                    >সূত্র: আল জাজিরা, আগস্ট ২০২৫</a
+                  >
+                </li>
+
+                <li>
+                  <strong
+                    >গাজার ৯৪% হাসপাতাল ও চিকিৎসা কেন্দ্র ধ্বংস বা অকার্যকর হয়ে
+                    পড়েছে।</strong
+                  >
+                  হাসপাতালগুলো বিদ্যুৎ, জ্বালানি বা সরবরাহ ছাড়াই চলছে।<br />
+                  <a
+                    href="https://www.who.int/news/item/22-05-2025-health-system-at-breaking-point-as-hostilities-further-intensify--who-warns?utm_source=chatgpt.com"
+                    target="_blank"
+                    >সূত্র: WHO, মে ২০২৫</a
+                  >
+                </li>
+
+                <li>
+                  <strong
+                    >গাজার প্রায় ৫১৪,০০০ মানুষ দুর্ভিক্ষের মতো পরিস্থিতিতে
+                    রয়েছে, যা জনসংখ্যার প্রায় এক-চতুর্থাংশ।</strong
+                  ><br />
+                  <a
+                    href="https://www.reuters.com/world/middle-east/modest-food-aid-increase-not-enough-stop-starvation-gaza-says-world-food-2025-08-28/?utm_source=chatgpt.com"
+                    target="_blank"
+                    >সূত্র: Reuters, আগস্ট ২০২৫</a
+                  >
+                </li>
+
+                <li>
+                  <strong
+                    >প্রতি ব্যক্তির জন্য দৈনিক পানির গড় ব্যবহার মাত্র ৩-৫
+                    লিটার, যা জরুরি প্রয়োজনের তুলনায় অনেক কম।</strong
+                  ><br />
+                  <a
+                    href="https://www.reuters.com/world/middle-east/terrible-thirst-hits-gaza-with-polluted-aquifers-broken-pipelines-2025-08-07/?utm_source=chatgpt.com"
+                    target="_blank"
+                    >সূত্র: Reuters, আগস্ট ২০২৫</a
+                  >
+                </li>
+
+                <li>
+                  <strong
+                    >গাজা সিটির দক্ষিণাঞ্চলের জাইতুন এলাকায় সমস্ত ভবন ধ্বংস
+                    হয়ে গেছে।</strong
+                  ><br />
+                  <a
+                    href="https://www.aljazeera.com/news/liveblog/2025/8/28/live-israel-demolishes-all-buildings-in-gaza-citys-southern-zeitoun-area?utm_source=chatgpt.com"
+                    target="_blank"
+                    >সূত্র: আল জাজিরা, আগস্ট ২০২৫</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <section>
+              <h2>
+                <font dir="auto" style="vertical-align: inherit"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    >📸 সংগ্রামের দৃশ্য</font
+                  ></font
+                >
+              </h2>
+              <div class="gallery">
+                <img
+                  src="https://www.map.org.uk/images/4b50669c-e517-4e66-a63b-62074ae4da0c_cropped.jpg"
+                  alt="বাস্তুচ্যুত পরিবারগুলি সারিবদ্ধভাবে দাঁড়িয়ে আছে"
+                />
+                <img
+                  src="https://c.files.bbci.co.uk/dee2/live/cebdb080-fde9-11ef-8c3d-b7dcc7510cb1.jpg"
+                  alt="ধ্বংসস্তূপের মাঝে শিশুরা"
+                />
+                <img
+                  src="https://assets3.cbsnewsstatic.com/hub/i/r/2025/06/24/2c568981-dd4d-4dc3-bb5e-57e518dc1d2c/thumbnail/640x430/b0a6b7b4642ef6ac3d110dfc32f975dc/gaza-aid-deaths-2221191999.jpg"
+                  alt="সাহায্য বিতরণ কেন্দ্র"
+                />
+                <img
+                  src="https://d3i6fh83elv35t.cloudfront.net/static/2025/04/2025-04-03T115840Z_658471006_RC28QDAEC7YH_RTRMADP_3_ISRAEL-PALESTINIANS-GAZA-1024x683.jpg"
+                  alt="ধসে পড়া ভবন"
+                />
+                <img
+                  src="https://i.guim.co.uk/img/media/6e58819c0a9ddf89882867d2402283785afae15d/0_147_5472_3283/master/5472.jpg?width=1200&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=91c166bd8ed78a581f43e0d89ac43699"
+                  alt="বাস্তুচ্যুত পরিবারগুলি সারিবদ্ধভাবে দাঁড়িয়ে আছে"
+                />
+                <img
+                  src="https://i.vimeocdn.com/video/1942563147-e93180cd69aebeccf8aa734b51bf625f8c58c0a8597312b9759b926e2a31785c-d_1920x1080?r=pad"
+                  alt="বাস্তুচ্যুত পরিবারগুলি সারিবদ্ধভাবে দাঁড়িয়ে আছে"
+                />
+              </div>
+            </section>
+
+            <section>
+              <h2>
+                <font dir="auto" style="vertical-align: inherit"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    >❤️ আপনি কিভাবে সাহায্য করতে পারেন</font
+                  ></font
+                >
+              </h2>
+              <p>
+                <font dir="auto" style="vertical-align: inherit"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    >গাজায় চলমান সংকটের সময় প্রতিটি ছোট সাহায্যই বড় পরিবর্তন
+                    আনতে পারে। আপনি দানের মাধ্যমে খাদ্য, পানি, ওষুধ বা নিরাপদ
+                    আশ্রয়ের সরবরাহে সহায়তা করতে পারেন। এছাড়াও সচেতনতা তৈরি
+                    করা, তথ্য শেয়ার করা এবং মানবিক সংগঠনগুলোর কার্যক্রমকে
+                    সমর্থন দেওয়াও অত্যন্ত গুরুত্বপূর্ণ। আপনার সময়, প্রচেষ্টা
+                    বা আর্থিক সহায়তা—যেকোনো ধরনের সাহায্য ক্ষতিগ্রস্ত পরিবার ও
+                    শিশুদের জীবনে আলো ফিরিয়ে আনার জন্য অবদান রাখতে পারে।
+                    প্রতিটি মানুষ একত্রিত হয়ে মানবিকতার হাত বাড়ালেই এই কঠিন
+                    পরিস্থিতি মোকাবেলা করা সম্ভব।</font
+                  ></font
+                >
+              </p>
+
+              <div class="donate">
+                <a href="https://donate.unrwa.org/int/en/gaza" target="_blank"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    ><font dir="auto" style="vertical-align: inherit"
+                      >UNRWA-কে দান করুন</font
+                    ></font
+                  ></a
+                >
+                <a href="https://assunnahfoundation.org/donate" target="_blank"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    ><font dir="auto" style="vertical-align: inherit"
+                      >আস-সুন্নাহ ফাউন্ডেশনে দান করুন</font
+                    ></font
+                  ></a
+                >
+                <a
+                  href="https://help.unicef.org/global/donate-to-children"
+                  target="_blank"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    ><font dir="auto" style="vertical-align: inherit"
+                      >ইউনিসেফ গাজায় দান করুন</font
+                    ></font
+                  ></a
+                >
+                <a href="https://www.doctorswithoutborders.org/" target="_blank"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    ><font dir="auto" style="vertical-align: inherit"
+                      >ডক্টরস উইদাউট বর্ডার্স-কে দান করুন</font
+                    ></font
+                  ></a
+                >
+                <a
+                  href="https://anera.org/where-we-work/palestine/gaza/"
+                  target="_blank"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    ><font dir="auto" style="vertical-align: inherit"
+                      >আনেরা-কে দান করুন</font
+                    ></font
+                  ></a
+                >
+              </div>
+
+              <p id="clickDiv">
+                <font dir="auto" style="vertical-align: inherit"
+                  ><font dir="auto" style="vertical-align: inherit"
+                    >📌 আপনি নীতিনির্ধারকদের উপর চাপ সৃষ্টি করতে পারেন যাতে তারা
+                    নিরাপদ ও অবাধ মানবিক সহায়তা নিশ্চিত করে, বেসামরিক নাগরিকদের
+                    সুরক্ষা প্রদান করে এবং যুদ্ধবিরতির প্রচেষ্টাকে সমর্থন করে।
+                    আপনার সমর্থন শুধু তথ্য বা শব্দ নয়—এটি সরাসরি মানুষের জীবন
+                    বাঁচানোর একটি শক্তিশালী হাত হতে পারে। প্রতিটি কণ্ঠস্বর,
+                    প্রতিটি প্রচেষ্টা গুরুত্বপূর্ণ এবং মানবিকতার জন্য পরিবর্তন
+                    আনতে সক্ষম।</font
+                  ></font
+                >
+              </p>
+            </section>
+
+            <section style="display: none" id="hdn">
+              <div id="sfctq2s5rzj6hkw2dudccu2xp8xqwpjskwn">
+                <a
+                  href="https://www.freecounterstat.com/geozoom.php?c=tq2s5rzj6hkw2dudccu2xp8xqwpjskwn&amp;base=counter1&amp;type_clic=1"
+                  target="_blank"
+                  ><img
+                    border="0"
+                    src="https://counter1.freecounterstat.com/private/counter.php?c=tq2s5rzj6hkw2dudccu2xp8xqwpjskwn&amp;init=1756405081993&amp;init_freecounterstat=0&amp;library=library_counters&amp;coef=0.5&amp;type=1167&amp;lenght=9&amp;pv=0"
+                    alt="এই সাইটের পরিদর্শনের বিস্তারিত তথ্য এবং পরিসংখ্যান দেখতে ক্লিক করুন"
+                    title="এই সাইটের পরিদর্শনের বিস্তারিত তথ্য এবং পরিসংখ্যান দেখতে ক্লিক করুন" /></a
+                ><img
+                  style="border: none"
+                  src="https://counter1.optistats.ovh:4433/private/pointeur/pointeur.gif?|tq2s5rzj6hkw2dudccu2xp8xqwpjskwn|1080*1920|en|24|1756405082|d9620dc754f951249a74ea73162a44da|computer|windows|10|chrome|139|Cambodia|KH|13.01020|105.00500||NEOCOMISP+LIMITED%2C+IPTX+Transit+and+Network+Servic|28800|0|1756405081|ok|https%3A//sohoje.github.io/gaja/|https%3A//github.com/sohoje/gaja/settings/pages|js|124.199.121.82|||&amp;init=1756405081993"
+                  border="0"
+                  width="1"
+                  height="1"
+                />
+              </div>
+              <script
+                type="text/javascript"
+                src="https://counter1.optistats.ovh/private/counter.js?c=tq2s5rzj6hkw2dudccu2xp8xqwpjskwn&amp;down=async"
+                async=""
+              ></script>
+              <noscript
+                ><a
+                  href="https://www.freecounterstat.com"
+                  title="page visitor counter"
+                  ><img
+                    src="https://counter1.optistats.ovh/private/freecounterstat.php?c=tq2s5rzj6hkw2dudccu2xp8xqwpjskwn"
+                    border="0"
+                    title="page visitor counter"
+                    alt="page visitor counter" /></a
+              ></noscript>
+            </section>
+
+            <!-- <footer>
+            ⚙️ <strong>কিভাবে নতুন পয়েন্ট যোগ করবেন?</strong> নিচের কোডে <code>.accordion-item</code> ব্লকটি কপি-পেস্ট করে নম্বর, শিরোনাম ও ভেতরের আরবি/উচ্চারণ/রেফারেন্স বদলে দিন। সব স্ক্রিপ্ট স্বয়ংক্রিয়ভাবে কাজ করবে।
+          </footer> -->
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="../Assets/javascript.js"></script>
+  </body>
+</html>
