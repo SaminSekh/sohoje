@@ -10,6 +10,7 @@
   --jumacolor: linear-gradient(135deg, #ace8ff, #a5f8e3);
   --date: rgb(141, 255, 126);
   --datebg: linear-gradient(to right, rgb(255, 255, 255) , rgb(255, 255, 255));
+  --menuColor: #c9e8ff;
   --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
   --border: rgba(2, 6, 23, 0.08);
   --banner-grad: linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%);
@@ -33,6 +34,7 @@
   --jumacolor: linear-gradient(135deg, #866e00, #006875);
   --date: rgb(11, 94, 0);
   --datebg: #1c2435;
+  --menuColor: #01508d;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   --border: rgba(148, 163, 184, 0.15);
   --banner-grad: linear-gradient(135deg, #1d4ed8 0%, #059669 100%);
@@ -277,8 +279,8 @@ body {
   border: 1px solid transparent;
 }
 .menu a:hover {
-  background: #c9e8ff;
-  color: black;
+  background: var(--menuColor);
+  color: var(--text);
   border-color: var(--border);
 }
 .menu .small {
@@ -315,10 +317,6 @@ body {
   background-color: #fff7c9;
   border: 1px solid transparent;
 }
-#activePage {
-  color: black;
-  background-color: #c9e8ff;
-}
 
 /* Topbar */
 .topbar {
@@ -349,6 +347,11 @@ body {
   position: relative;
   z-index: 1;
 }
+
+#activePage {
+  background-color: var(--menuColor);
+}
+
 .hamburger {
   width: 42px;
   height: 42px;
@@ -598,9 +601,11 @@ footer > strong > a {
 }
 .topBar li:hover {
   background-color: #c9e8ff;
+  background-color: var(--menuColor);
 }
 .topBar li a:hover {
-  color: #00640d;
+  color: var(--text);
+  
 }
 
 /*Gaja ################################################ */
