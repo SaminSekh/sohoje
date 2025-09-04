@@ -63,7 +63,7 @@
 /*quranApp  ################################################ */
 
 .quranApp {
-  max-width: 850px;
+  max-width: 800px;
   margin: 20px auto;
   font-family: "Noto Sans", sans-serif;
   line-height: 1.6;
@@ -127,14 +127,14 @@
   align-items: center;
 }
 .TopTitt {
-  display: flex;
+    display: flex;
     color: var(--text);
     flex-direction: row-reverse;
     justify-content: center;
     align-items: center;
     border-radius: 25px;
-    padding: 10px 25px;
-    gap: 15px;
+    padding: 10px 0px;
+    gap: 0px;
 }
 
 .TopTitt> input{
