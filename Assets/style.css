@@ -99,7 +99,7 @@
   border-bottom: 1px solid #009b2e;
 }
 .quranApp .verse .ar {
-  font-size: 22px;
+  font-size: 30px;
   direction: rtl;
   text-align: right;
   margin-bottom: 8px;
@@ -771,3 +771,4 @@ button {
     padding: 5px;
   }
 }
+
