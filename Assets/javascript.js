@@ -1,10 +1,12 @@
 // Sidebar toggle (mobile)
+// Sidebar toggle (mobile)
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 const menuCloseBtns = document.querySelectorAll(".menuClose");
 
 // Open / Toggle
-menuBtn.addEventListener("click", () => {
+menuBtn.addEventListener("click", (e) => {
+  e.stopPropagation(); // নিজের ক্লিক bubble না হোক
   sidebar.classList.toggle("open");
 });
 
@@ -15,6 +17,17 @@ menuCloseBtns.forEach((btn) => {
   });
 });
 
+// Click outside to close
+document.addEventListener("click", (e) => {
+  if (
+    sidebar.classList.contains("open") && // মেনু খোলা আছে
+    !sidebar.contains(e.target) && // ক্লিক সাইডবারের ভেতরে নয়
+    e.target !== menuBtn // মেনু বোতামে নয়
+  ) {
+    sidebar.classList.remove("open");
+  }
+});
+
 // Theme toggle with localStorage
 const themeBtn = document.getElementById("themeBtn");
 const themeLabel = document.getElementById("themeLabel");
@@ -22,8 +35,9 @@ const themeLabel = document.getElementById("themeLabel");
 function setTheme(mode) {
   document.documentElement.setAttribute("data-theme", mode);
   localStorage.setItem("theme", mode);
-  themeLabel.textContent = mode === "dark" ? "লাইট" : " ডার্ক ";
+  themeLabel.textContent = mode === "dark" ? "লাইট" : "ডার্ক";
 }
+
 const saved = localStorage.getItem("theme");
 setTheme(
   saved ||
@@ -36,6 +50,7 @@ themeBtn.addEventListener("click", () => {
   const current = document.documentElement.getAttribute("data-theme");
   setTheme(current === "light" ? "dark" : "light");
 });
+
 
 // লেখা চলা   ###################################################
 
