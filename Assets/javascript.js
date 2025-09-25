@@ -1,5 +1,4 @@
 // Sidebar toggle (mobile)
-// Sidebar toggle (mobile)
 const menuBtn = document.getElementById("menuBtn");
 const sidebar = document.getElementById("sidebar");
 const menuCloseBtns = document.querySelectorAll(".menuClose");
@@ -1703,4 +1702,27 @@ function copyToClipboard(text) {
 
   // প্রথমবার পেজ লোড হলে হাদিস লোড করুন
   setTimeout(loadHadith, 500);
+});
+
+
+
+// Share functionality
+document.getElementById('ShareSite').addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    if (navigator.share) {
+        const shareMessage = 
+            "আমি একটা সাইট লিংক দিচ্ছি এখান থেকে একদম সহজে ধাপে ধাপে ইসলামিক শিক্ষা নেওয়া যাবে। এখানে কিভাবে নামাজ পড়তে হবে সহজে লেখা আছে - সাথে আমল, হাদিস, জীবনে কিভাবে চলা উচিত ইত্যাদি দেওয়া আছে। এছাড়া এখান থেক কুর-আন পড়া ও শোনাও যাবে। সাইট লিঙ্কটি : " + window.location.href;
+        try {
+            await navigator.share({
+                title: "Great Restaurant!",
+                text: shareMessage
+            });
+            console.log("Thanks for sharing!");
+        } catch (err) {
+            console.error("Share failed:", err);
+        }
+    } else {
+        alert("Sharing is not supported on this browser.");
+    }
 });
