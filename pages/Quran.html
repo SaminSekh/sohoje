@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>সহজে ডট ইন</title>
+
+  <!-- Meta Description -->
+  <meta name="description"
+    content="ইসলামিক শিক্ষা ও দোয়ার পোর্টাল। এখানে নামাজ, তাসবিহ, দুরুদ, যিকির ও ইসলামিক হাদিস সম্পর্কিত তথ্য পাবেন। প্রতিদিনের দোয়া ও নিয়মাবলী সহ।" />
+
+  <!-- Meta Keywords -->
+  <meta name="keywords" content="ইসলাম, নামাজ, দোয়া, যিকির, দরুদ, ইসলামিক শিক্ষা, হাদিস, কুরআন, মুসুলিম, ইসলামী পেজ" />
+
+  <!-- Author -->
+  <meta name="author" content="আপনার নাম / আপনার ওয়েবসাইটের নাম" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="../icons/icon-192.png" type="image/png" />
+
+  <!-- Open Graph / Social Media Sharing -->
+  <meta property="og:title" content="ইসলামিক শিক্ষা ও দোয়া" />
+  <meta property="og:description" content="নামাজ, দুরুদ, যিকির ও ইসলামিক তথ্য সহ একটি পূর্ণাঙ্গ ইসলামিক পোর্টাল।" />
+  <meta property="og:image" content="../icons/icon-512.png" />
+  <meta property="og:url" content="https://yourwebsite.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ইসলামিক শিক্ষা ও দোয়া" />
+  <meta name="twitter:description" content="নামাজ, দুরুদ, যিকির ও ইসলামিক তথ্য সহ একটি পূর্ণাঙ্গ ইসলামিক পোর্টাল।" />
+  <meta name="twitter:image" content="../icons/icon-512.png" />
+
+  <!-- Google Fonts (Arabic + Bengali + UI) -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+Bengali:wght@300;400;500;700&family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="../Assets/style.css" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0d6efd" />
+</head>
+
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="বাম মেনু">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">ইসলামিক জ্ঞানকোষ</div>
+      </div>
+      <nav class="menu">
+        <a href="../index.html">হোম</a>
+        <a href="namaj.html">নামাজ</a>
+        <a href="amal.html">আমল</a>
+        <a href="pap.html">পাপকর্ম</a>
+        <a href="Quran.html" id="activePage">কুরআন</a>
+        <a href="Hadis.html">হাদিস</a>
+        <a href="jibon.html">দৈনন্দিন জীবন</a>
+        <a href="Ramadan.html">রমজান</a>
+        <a href="gaja.html">গাজা</a>
+        <a href="contact.html">যোগাযোগ</a>
+        <a href="#" id="ShareSite">শেয়ার করুন</a>
+      </nav>
+      <div style="margin-top: auto"></div>
+      <div class="small" id="installBtn">
+        <i class="fa fa-android" style="font-size: 20px; color: rgb(17, 179, 2); margin-right: 5px"></i>অ্যাপ ডাউনলোড
+      </div>
+      <br />
+      <div class="menuClose">বন্ধ করুন</div>
+    </aside>
+
+    <!-- Main -->
+    <main>
+      <!-- Top Banner / Topbar -->
+      <header class="topbar">
+        <div class="top-left">
+          <button class="hamburger" id="menuBtn" aria-label="টোগল মেনু">
+            <span></span>
+          </button>
+          <div class="banner">
+            <svg class="moon-star" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
+              <path d="M12.5 3a8.5 8.5 0 1 0 8 11.3A7 7 0 1 1 12.5 3Z" stroke="white" stroke-width="1.5" />
+              <path d="M18.5 5l.6 1.7L20.8 7l-1.5 1.2.5 1.8-1.6-.9-1.5.9.4-1.8L16 7l1.7-.3.8-1.7Z" fill="white" />
+            </svg>
+            <div>বিসমিল্লাহির রাহমানির রাহিম</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="themeBtn" aria-label="লাইট/ডার্ক মোড">
+            🌓 <span id="themeLabel">ডার্ক</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="content" id="home">
+        <div class="container">
+          <div class="topMenu">
+            <marquee id="runFont"></marquee>
+            <ul class="topBar2">
+              <li><a href="../index.html">হোম</a></li>
+              <li><a href="namaj.html">নামাজ</a></li>
+              <li><a href="amal.html">আমল</a></li>
+              <li><a href="pap.html">পাপকর্ম</a></li>
+              <li id="activePage"><a href="Quran.html">কুরআন</a></li>
+              <li><a href="Hadis.html">হাদিস</a></li>
+              <li><a href="jibon.html">দৈনন্দিন জীবন</a></li>
+              <li><a href="Ramadan.html">রমজান</a></li>
+              <li><a href="gaja.html">গাজা</a></li>
+              <li><a href="contact.html">যোগাযোগ</a></li>
+            </ul>
+          </div>
+
+          <div class="quranApp"></div>
+
+          <footer>
+            ⚙️
+            <strong>আমরা সর্বদা সহীহ তথ্য দেওয়ার চেষ্টা করি। তবে যদি কোনো ত্রুটি,
+              বানান ভুল বা সংশোধনের প্রয়োজনীয় কিছু আপনার চোখে পড়ে, তাহলে
+              অনুগ্রহ করে আমাদের সাথে যোগাযোগ করুন। ইনশাআল্লাহ আমরা দ্রুততম
+              সময়ে তা যাচাই করে আপডেট করে দেব।
+              <a href="contact.html">এখানে জানান আমাদের</a></strong>
+          </footer>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="scroll-arrows">
+    <button id="scrollToTop" class="scroll-btn" title="উপরে যান">
+      <i class="fa fa-arrow-up"></i>
+    </button>
+    <button id="scrollToBottom" class="scroll-btn" title="নিচে যান">
+      <i class="fa fa-arrow-down"></i>
+    </button>
+  </div>
+
+  <script src="../Assets/javascript.js"></script>
+</body>
+
+</html>

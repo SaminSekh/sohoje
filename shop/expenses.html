@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses Management - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="expenses-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Expenses Management</h3>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-primary btn-action" id="addExpenseBtn">
+                    <i class="fas fa-plus"></i> Add
+                </button>
+                <button class="btn btn-secondary btn-action" id="refreshUsers">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button class="btn btn-success btn-action" id="exportExpensesBtn">
+                    <i class="fas fa-file-excel"></i> Export
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Expenses Summary -->
+            <div class="expenses-summary">
+                <div class="summary-card danger">
+                    <div class="summary-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Total Expenses</h3>
+                        <div class="value" id="totalExpenses">0</div>
+                        <div class="period">This Month</div>
+                    </div>
+                </div>
+
+                <div class="summary-card warning">
+                    <div class="summary-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Today's Expenses</h3>
+                        <div class="value" id="todayExpenses">0</div>
+                    </div>
+                </div>
+
+                <div class="summary-card success">
+                    <div class="summary-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Total Income</h3>
+                        <div class="value" id="totalIncome">0</div>
+                        <div class="period">This Month</div>
+                    </div>
+                </div>
+
+                <div class="summary-card info">
+                    <div class="summary-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Net Balance</h3>
+                        <div class="value" id="netBalance">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses Filters -->
+            <div class="filter-section">
+                <div class="welcome-header">
+                    <div class="welcome-text">
+                        <p><i class="fas fa-filter"></i> Filter expenses and income records by date and category.</p>
+                    </div>
+                    <div class="time-filter">
+                        <div class="category-filter" style="margin-right: 10px;">
+                            <select id="expenseCategory" class="form-control filter-select"
+                                style="min-width: 150px; padding-left: 15px !important;">
+                                <option value="">All Categories</option>
+                                <option value="rent">Rent</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="salary">Salary</option>
+                                <option value="inventory">Inventory</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="other">Other</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+                        <div class="select-wrapper">
+                            <i class="fas fa-calendar-alt filter-icon"></i>
+                            <select id="timeRangeFilter" class="form-control filter-select">
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                                <option value="custom">Date Range</option>
+                            </select>
+                        </div>
+                        <div id="customDateRange" class="custom-date-inputs" style="display: none;">
+                            <input type="date" id="expenseFromDate" class="form-control date-input">
+                            <input type="date" id="expenseToDate" class="form-control date-input">
+                            <button id="applyExpenseFilter"
+                                class="btn btn-primary btn-action btn-sm btn-narrow">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses Chart -->
+            <div class="expense-chart">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h4><i class="fas fa-chart-bar"></i> Expenses by Category</h4>
+                    </div>
+                    <canvas id="expensesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Type</th>
+                            <th>Added By</th>
+                            <th>Receipt</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expensesTable">
+                        <tr>
+                            <td colspan="8" class="text-center">Loading expenses...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Expense Modal -->
+    <div class="modal" id="expenseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-money-bill-wave"></i> <span id="expenseModalTitle">Add Expense</span></h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="expenseForm">
+                    <input type="hidden" id="expenseId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Date *</label>
+                            <input type="date" id="expenseDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-tags"></i> Type *</label>
+                            <select id="expenseType" required>
+                                <option value="expense">Expense (Negative)</option>
+                                <option value="income">Income (Positive)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> Category *</label>
+                            <select id="expenseCategorySelect" required>
+                                <option value="">Select Category</option>
+                                <option value="rent">Rent</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="salary">Salary</option>
+                                <option value="inventory">Inventory</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="other">Other</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-coins"></i> Amount *</label>
+                            <input type="number" id="expenseAmount" required step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-align-left"></i> Description *</label>
+                        <textarea id="expenseDescription" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-receipt"></i> Receipt (Optional)</label>
+                        <input type="text" id="expenseReceipt" placeholder="Receipt number or URL">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="recurringExpense">
+                            <label for="recurringExpense" class="form-check-label">
+                                <i class="fas fa-redo"></i> Recurring Expense
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Recurring Options (Hidden by default) -->
+                    <div class="recurring-options" id="recurringOptions" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Frequency</label>
+                                <select id="recurringFrequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" id="recurringEndDate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-danger btn-action" id="deleteExpenseBtn" style="display: none;">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn btn-primary btn-action" id="saveExpenseBtn">
+                    <i class="fas fa-save"></i> Save Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/expenses.js"></script>
+</body>
+
+</html>

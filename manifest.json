@@ -1,0 +1,33 @@
+{
+  "name": "সহজে ডট কম - ইসলামিক জ্ঞানকোষ",
+  "short_name": "সহজে",
+  "description": "ইসলামিক শিক্ষা ও দয়ার পোর্টাল। নামাজ, তাসবিহ, দুরুদ, যিকির ও ইসলামিক হাদিস সম্পর্কিত তথ্য।",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0d6efd",
+  "theme_color": "#0d6efd",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "education",
+    "lifestyle"
+  ]
+}

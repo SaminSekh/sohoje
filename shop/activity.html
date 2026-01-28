@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Activity - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="shop-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Staff Activity Tracking</h3>
+            </div>
+            <div class="navbar-right">
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-fullname" id="userFullName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Activity Log</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary btn-action" id="refreshActivity">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-options">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="activitySearch" placeholder="Search activities (user, action, item)...">
+                </div>
+                <div class="select-wrapper">
+                    <select id="actionTypeFilter" class="form-control">
+                        <option value="">All Actions</option>
+                        <option value="create">Create</option>
+                        <option value="update">Update</option>
+                        <option value="delete">Delete</option>
+                        <option value="sell">Sales</option>
+                        <option value="add_stock">Stock Update</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Staff Member</th>
+                            <th>Action</th>
+                            <th>Category</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activityTable">
+                        <tr>
+                            <td colspan="5" class="text-center">Loading activities...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/activity.js"></script>
+</body>
+
+</html>

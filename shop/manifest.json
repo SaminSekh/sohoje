@@ -1,0 +1,22 @@
+{
+  "name": "Shop Online Menu",
+  "short_name": "ShopMenu",
+  "description": "Browse our products and order directly via WhatsApp or Telegram.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f6425",
+  "icons": [
+    {
+      "src": "assets/default-shop-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/default-shop-logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

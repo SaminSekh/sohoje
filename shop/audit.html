@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Log & Online Users - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .online-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #2ec4b6;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            box-shadow: 0 0 5px #2ec4b6;
+        }
+
+        .offline-dot {
+            height: 10px;
+            width: 10px;
+            background-color: #6c757d;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .online-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .online-users-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .online-user-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            gap: 10px;
+        }
+
+        .online-user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="shop-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Audit Log / Security</h3>
+            </div>
+            <div class="navbar-right">
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-fullname" id="userFullName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Online Users Section -->
+            <div class="online-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Staff Status (Online Now)</h2>
+                    <div class="header-actions">
+                        <small class="text-muted">Updated just now</small>
+                    </div>
+                </div>
+                <div class="online-users-list" id="onlineUsersList">
+                    <!-- Online users will be loaded here -->
+                    <div class="text-center w-100 p-3">Checking staff status...</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2><i class="fas fa-clipboard-list"></i> Login / Logout History</h2>
+                <div class="header-actions">
+                    <button class="btn btn-secondary btn-action" id="refreshAudit">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-success btn-action" id="exportAudit">
+                        <i class="fas fa-file-excel"></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="filter-options">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="auditSearch" placeholder="Search logs (username, action)...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Staff Member</th>
+                            <th>Action</th>
+                            <th>Device / IP</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTable">
+                        <tr>
+                            <td colspan="4" class="text-center">Loading logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/audit.js"></script>
+</body>
+
+</html>
