@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body class="sales-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Sales Report</h3>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-success btn-action" id="exportExcelBtn">
+                    <i class="fas fa-file-excel"></i> Excel
+                </button>
+                <button class="btn btn-danger btn-action" id="exportPdfBtn">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Date Filters -->
+            <div class="filter-section">
+                <div class="welcome-header">
+                    <div class="welcome-text">
+                        <p><i class="fas fa-filter"></i> Filter report data by selecting a date range.</p>
+                    </div>
+                    <div class="time-filter">
+                        <div class="select-wrapper">
+                            <i class="fas fa-calendar-alt filter-icon"></i>
+                            <select id="timeRangeFilter" class="form-control filter-select">
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                                <option value="custom">Date Range</option>
+                            </select>
+                        </div>
+                        <div id="customDateRange" class="custom-date-inputs" style="display: none;">
+                            <input type="text" id="fromDate" class="form-control date-input datepicker"
+                                placeholder="From">
+                            <input type="text" id="toDate" class="form-control date-input datepicker" placeholder="To">
+                            <button id="applyDateFilter"
+                                class="btn btn-primary btn-action btn-sm btn-narrow">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Statistics -->
+            <div class="sales-stats">
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Sales</h3>
+                        <div class="value" id="totalSalesAmount">0</div>
+                        <div class="change" id="salesChange">+0%</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Orders</h3>
+                        <div class="value" id="totalOrders">0</div>
+                        <div class="change" id="ordersChange">+0%</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Credit Sales</h3>
+                        <div class="value" id="creditSales">0</div>
+                        <div class="change" id="creditChange">+0%</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Average Order Value</h3>
+                        <div class="value" id="averageOrder">0</div>
+                        <div class="change" id="avgOrderChange">+0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-section">
+                <div class="chart-container-modern">
+                    <div class="chart-header">
+                        <h4><i class="fas fa-chart-line"></i> Daily Sales Trend</h4>
+                        <select id="chartPeriod" class="form-control" style="width: auto;">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30">Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container-modern">
+                    <div class="chart-header">
+                        <h4><i class="fas fa-chart-pie"></i> Payment Methods</h4>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-title">
+                        <i class="fas fa-list"></i> Sales Transactions
+                    </div>
+                    <div class="table-actions">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="salesSearch" placeholder="Search transactions...">
+                        </div>
+                        <button class="btn btn-secondary btn-action" id="refreshSales">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">
+                                <input type="checkbox" id="selectAllSales">
+                            </th>
+                            <th>Invoice #</th>
+                            <th>Date & Time</th>
+                            <th>Customer</th>
+                            <th>Products</th>
+                            <th>Quantity</th>
+                            <th>Buy Price</th>
+                            <th>Total Amount</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                            <th>Sold By</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTable">
+                        <tr>
+                            <td colspan="10" class="text-center">Loading sales data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination" id="salesPagination">
+                    <button class="btn btn-sm btn-action" id="prevPage">Previous</button>
+                    <span id="pageInfo">Page 1 of 1</span>
+                    <button class="btn btn-sm btn-action" id="nextPage">Next</button>
+                </div>
+            </div>
+
+            <!-- Detailed View Modal -->
+            <div class="modal" id="saleDetailsModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-receipt"></i> Sale Details - Invoice #<span id="invoiceNumber"></span></h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="saleDetailsContent">
+                            <!-- Sale details will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary btn-action close-modal">Close</button>
+                        <button class="btn btn-primary btn-action" id="printSaleBtn">
+                            <i class="fas fa-print"></i> Print Invoice
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Bulk Action Bar -->
+            <div id="bulkActionBar" class="bulk-action-bar">
+                <div class="bulk-info">
+                    <span id="selectedCount">0</span> items selected
+                </div>
+                <div class="bulk-buttons">
+                    <button class="btn btn-danger btn-action" id="bulkDeleteBtn">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    <button class="btn btn-secondary btn-action" id="cancelSelection">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sales.js"></script>
+</body>
+
+</html>

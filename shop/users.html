@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="users-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Users Management</h3>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-primary btn-action" id="addUserBtn">
+                    <i class="fas fa-user-plus"></i> Add User
+                </button>
+                <button class="btn btn-success" id="exportUsersBtn">
+                    <i class="fas fa-file-excel"></i> Export Excel
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Users Statistics -->
+            <div class="users-stats">
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Users</h3>
+                        <div class="value" id="totalUsers">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Admins</h3>
+                        <div class="value" id="activeAdmins">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon info">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Staff</h3>
+                        <div class="value" id="activeStaff">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Inactive Users</h3>
+                        <div class="value" id="inactiveUsers">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="usersSearch" placeholder="Search users...">
+                    </div>
+
+                    <div class="filter-options">
+                        <select id="usersRoleFilter" class="form-control">
+                            <option value="">All Roles</option>
+                            <option value="shop_admin">Shop Admin</option>
+                            <option value="shop_staff">Shop Staff</option>
+                        </select>
+
+                        <select id="usersStatusFilter" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+
+                        <button class="btn btn-secondary" id="refreshUsers">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Role</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <tr>
+                            <td colspan="9" class="text-center">Loading users...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-edit"></i> <span id="userModalTitle">Add User</span></h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="userId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Username *</label>
+                            <input type="text" id="username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> Password *</label>
+                            <input type="password" id="password" required>
+                            <button type="button" class="btn btn-sm" id="generatePassword">Generate</button>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-id-card"></i> Full Name *</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number</label>
+                            <input type="tel" id="userPhone">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="userEmail">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-user-tag"></i> Role *</label>
+                            <select id="userRole" required>
+                                <option value="">Select Role</option>
+                                <option value="shop_admin">Shop Admin</option>
+                                <option value="shop_staff">Shop Staff</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Permissions Section -->
+                    <div class="permissions-section">
+                        <h5><i class="fas fa-key"></i> Permissions</h5>
+
+                        <div class="permissions-grid">
+                            <div class="form-check">
+                                <input type="checkbox" id="permDashboard">
+                                <label for="permDashboard">Dashboard</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permPOS" checked>
+                                <label for="permPOS">POS</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permInventory" checked>
+                                <label for="permInventory">Inventory</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permSales">
+                                <label for="permSales">Sales Report</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permCredit" checked>
+                                <label for="permCredit">Credit</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permExpenses">
+                                <label for="permExpenses">Expenses</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permUsers">
+                                <label for="permUsers">Users Management</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permSettings">
+                                <label for="permSettings">Settings</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="checkbox" id="permAudit">
+                                <label for="permAudit">Audit Log</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="userActive" checked>
+                            <label for="userActive" class="form-check-label">
+                                <i class="fas fa-check-circle"></i> Account Active
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-danger" id="deleteUserBtn" style="display: none;">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn btn-primary btn-action" id="saveUserBtn">
+                    <i class="fas fa-save"></i> Save User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/users.js"></script>
+</body>
+
+</html>

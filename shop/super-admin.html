@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-crown"></i> Super Admin</h2>
+            <div class="shop-info">
+                <div class="user-name" id="userName">Super Admin</div>
+                <div class="user-role">Administrator</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3 id="pageTitle">Super Admin Dashboard</h3>
+            </div>
+            <div class="navbar-right">
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar">SA</div>
+                    <div class="user-details">
+                        <div class="user-fullname" id="userFullName">Super Admin</div>
+                        <div class="user-email" id="userEmail">admin@system.com</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Dashboard Overview -->
+            <div id="dashboardOverview" class="page-section active">
+                <div class="welcome-section">
+                    <h2>Welcome, <span id="welcomeName">Super Admin</span>!</h2>
+                    <p>You have full control over all shops and users in the system.</p>
+                </div>
+
+                <!-- Date Filters -->
+                <div class="filter-options" style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <label for="dateFilterSelect" style="font-weight: 600; color: var(--text-primary);">
+                            <i class="fas fa-calendar-alt"></i> Filter By:
+                        </label>
+                        <select id="dateFilterSelect" class="form-control" style="max-width: 200px;">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <!-- Group 1: Admin Stats -->
+                    <div class="stat-card">
+                        <div class="stat-icon sales">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Shops</h3>
+                            <div class="value" id="totalShops">0</div>
+                            <div class="change positive"><a href="#" id="viewAllShopsCard"
+                                    style="color: inherit; text-decoration: none;">Manage Shops</a></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Users</h3>
+                            <div class="value" id="totalUsers">0</div>
+                            <div class="change positive"><a href="#" id="viewAllUsersCard"
+                                    style="color: inherit; text-decoration: none;">Manage Users</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Group 2: Overview / Key Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon sales">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Sales</h3>
+                            <div class="value" id="totalSales">0.00</div>
+                            <div class="change positive" id="salesFilterLabel">All Time</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalProfitLabel">Total Profit</h3>
+                            <div class="value" id="totalProfit">0.00</div>
+                            <div class="change positive">Calculated</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Profit Margin</h3>
+                            <div class="value" id="totalProfitPercentage">0%</div>
+                            <div class="change info">Markup</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Balance</h3>
+                            <div class="value" id="dashboardCashInHand">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp + Pending)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-store-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Valuation</h3>
+                            <div class="value" id="dashboardValuation">0.00</div>
+                            <div class="change info">Total Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 3: Daily & Net Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Today's Expenses</h3>
+                            <div class="value" id="dashboardTodayExpenses">0.00</div>
+                            <div class="change expense">Today</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalBalanceTitle">Shop sales+balance</h3>
+                            <div class="value" id="totalBalance">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Credit</h3>
+                            <div class="value" id="totalCredit">0.00</div>
+                            <div class="change warning">All Time</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Pending Balance</h3>
+                            <div class="value" id="totalPendingBalance">0.00</div>
+                            <div class="change danger">Outstanding</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 4: Inventory Valuation -->
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Value (Cost)</h3>
+                            <div class="value" id="dashboardProductCostValue">0.00</div>
+                            <div class="change warning">Inventory Cost</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Sell Value</h3>
+                            <div class="value" id="dashboardProductSellValue">0.00</div>
+                            <div class="change success">Inventory Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 5: Inventory Logistics -->
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Count</h3>
+                            <div class="value" id="totalProducts">0</div>
+                            <div class="change success">Total Items</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon credit">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>In Stock</h3>
+                            <div class="value" id="totalUnitCount">0</div>
+                            <div class="change positive">Units</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Out of Stock</h3>
+                            <div class="value" id="totalOutOfStock">0</div>
+                            <div class="change negative">Products</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="btn btn-primary btn-action" id="quickAddShop">
+                        <i class="fas fa-plus-circle"></i> Add Shop
+                    </button>
+                    <button class="btn btn-success btn-action" id="quickAddUser">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                    <button class="btn btn-secondary btn-action" id="refreshDashboard">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Recent Shops -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title" id="recentShopsTitle">
+                            <i class="fas fa-store"></i> Recent Shops
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary btn-sm btn-action" id="viewAllShops">
+                                <i class="fas fa-eye"></i> View All
+                            </button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Shop Name</th>
+                                <th>Type</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Balance</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentShopsTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading shops...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Recent Users -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="fas fa-users"></i> Recent Users
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary btn-sm btn-action" id="viewAllUsers">
+                                <i class="fas fa-eye"></i> View All
+                            </button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Shop</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentUsersTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Shops Section -->
+            <div id="manageShopsSection" class="page-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> Manage Shops</h2>
+                    <button class="btn btn-primary btn-action" id="addShopBtn">
+                        <i class="fas fa-plus"></i> Add Shop
+                    </button>
+                </div>
+
+                <!-- Shop Filters -->
+                <div class="filter-options">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="shopSearch" placeholder="Search shops...">
+                    </div>
+                    <button class="btn btn-secondary btn-action" id="refreshShops">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Shops Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Shop Name</th>
+                                <th>Type</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Balance</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shopsTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading shops...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Manage Users Section -->
+            <div id="manageUsersSection" class="page-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Manage Users</h2>
+                    <button class="btn btn-primary btn-action" id="addUserBtn">
+                        <i class="fas fa-user-plus"></i> Add User
+                    </button>
+                </div>
+
+                <!-- User Filters -->
+                <div class="filter-options">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="userSearch" placeholder="Search users...">
+                    </div>
+                    <button class="btn btn-secondary btn-action" id="refreshUsers">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Shop</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            <div id="activitySection" class="page-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Shop Activity</h2>
+                    <button class="btn btn-secondary btn-action" id="refreshActivity">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="filter-options">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="activitySearch" placeholder="Search activity, products, sales...">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Shop</th>
+                                <th>Action</th>
+                                <th>Item/Table</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading activity...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Logs Section -->
+            <div id="logsSection" class="page-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Admin Logs</h2>
+                    <button class="btn btn-secondary btn-action" id="refreshLogs">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Log Filters -->
+                <div class="filter-options">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="logSearch" placeholder="Search logs by user, action, or shop...">
+                    </div>
+                </div>
+
+                <!-- Logs Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Shop</th>
+                                <th>Category</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTable">
+                            <tr>
+                                <td colspan="6" class="text-center">Loading logs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Add Shop Modal -->
+    <div class="modal" id="addShopModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-store"></i> Add New Shop</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="shopForm">
+                    <div class="form-group">
+                        <label for="shopName"><i class="fas fa-signature"></i> Shop Name *</label>
+                        <input type="text" id="shopName" required placeholder="Enter shop name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shopAddress"><i class="fas fa-map-marker-alt"></i> Address</label>
+                        <textarea id="shopAddress" rows="3" placeholder="Enter shop address"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shopPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="text" id="shopPhone" placeholder="Enter phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shopType"><i class="fas fa-tags"></i> Shop Type *</label>
+                        <select id="shopType" required>
+                            <option value="general">General Store</option>
+                            <option value="restaurant">Restaurant / Cafe</option>
+                            <option value="medicine">Pharmacy / Medicine</option>
+                            <option value="grocery">Grocery Store</option>
+                            <option value="cloth">Clothing / Boutique</option>
+                            <option value="footwear">Footwear Store</option>
+                            <option value="cosmetics">Cosmetics & Personal Care</option>
+                            <option value="electronics">Electronics & Mobile</option>
+                            <option value="furniture">Furniture & Home</option>
+                            <option value="home_decor">Home Decor</option>
+                            <option value="home_appliances">Home Appliances</option>
+                            <option value="stationery">Stationery & Books</option>
+                            <option value="toys">Toys & Gifts</option>
+                            <option value="gifts">Gifts & Greeting Cards</option>
+                            <option value="sports">Sports & Fitness</option>
+                            <option value="pet_supplies">Pet Supplies</option>
+                            <option value="jewellery">Jewellery & Accessories</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="initialBalance"><i class="fas fa-coins"></i> Initial Balance</label>
+                        <input type="number" id="initialBalance" value="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-primary btn-action" id="saveShopBtn">Save Shop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal" id="addUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New User</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="userForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newUsername"><i class="fas fa-user"></i> Username *</label>
+                            <input type="text" id="newUsername" required placeholder="Enter username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newPassword"><i class="fas fa-lock"></i> Password *</label>
+                            <input type="password" id="newPassword" required placeholder="Enter password">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newFullName"><i class="fas fa-id-card"></i> Full Name *</label>
+                            <input type="text" id="newFullName" required placeholder="Enter full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                            <input type="text" id="newPhone" placeholder="Enter phone number">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="newEmail"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="newEmail" placeholder="Enter email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newRole"><i class="fas fa-user-tag"></i> Role *</label>
+                            <select id="newRole" required>
+                                <option value="">Select Role</option>
+                                <option value="super_admin">Super Admin</option>
+                                <option value="shop_admin">Shop Admin</option>
+                                <option value="shop_staff">Shop Staff</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userShop"><i class="fas fa-store"></i> Assign to Shop</label>
+                        <select id="userShop">
+                            <option value="">No Shop Assigned</option>
+                        </select>
+                    </div>
+
+                    <!-- Permissions Section -->
+                    <div class="permissions-section" style="margin-top: 15px; margin-bottom: 20px;">
+                        <h5
+                            style="margin-bottom: 10px; font-weight: 600; color: var(--dark); border-bottom: 1px solid var(--light-gray); padding-bottom: 5px;">
+                            <i class="fas fa-key"></i> Permissions
+                        </h5>
+                        <div class="permissions-grid"
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px;">
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermDashboard" class="perm-checkbox">
+                                <label for="addPermDashboard">Dashboard</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermShops" class="perm-checkbox">
+                                <label for="addPermShops">Manage Shops</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermPOS" class="perm-checkbox" checked>
+                                <label for="addPermPOS">POS</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermInventory" class="perm-checkbox" checked>
+                                <label for="addPermInventory">Inventory</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermSales" class="perm-checkbox">
+                                <label for="addPermSales">Sales Report</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermCredit" class="perm-checkbox" checked>
+                                <label for="addPermCredit">Credit</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermExpenses" class="perm-checkbox">
+                                <label for="addPermExpenses">Expenses</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermUsers" class="perm-checkbox">
+                                <label for="addPermUsers">Users</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermSettings" class="perm-checkbox">
+                                <label for="addPermSettings">Settings</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermAudit" class="perm-checkbox">
+                                <label for="addPermAudit">Audit Log</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="addPermActivity" class="perm-checkbox">
+                                <label for="addPermActivity">Activity</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" id="userActive" checked>
+                            <label for="userActive" class="form-check-label">
+                                <i class="fas fa-check-circle"></i> Account Active
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-primary btn-action" id="saveUserBtn">Save User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Shop Modal -->
+    <div class="modal" id="editShopModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Shop</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="editShopForm">
+                    <!-- Form will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-action" id="deleteShopBtn">Delete</button>
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-primary btn-action" id="updateShopBtn">Update Shop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-edit"></i> Edit User</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="editUserForm">
+                    <!-- Form will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-action" id="deleteUserBtn">Delete</button>
+                <button class="btn btn-primary btn-action" id="updateUserBtn">Update User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop Details Modal -->
+    <div class="modal" id="shopDetailsModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-chart-bar"></i> Shop Details & Analytics</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Shop Basic Info -->
+                <div class="shop-details-header"
+                    style="margin-bottom: 20px; padding: 15px; background: var(--light-gray); border-radius: 8px;">
+                    <h4 id="shopDetailsName" style="margin: 0 0 5px 0;">Shop Name</h4>
+                    <p id="shopDetailsAddress" style="margin: 0; color: var(--gray);"></p>
+                </div>
+
+                <!-- Date Filter for Details -->
+                <div style="margin-bottom: 20px;">
+                    <label for="shopDetailsFilter" style="font-weight: 600; margin-right: 10px;">
+                        <i class="fas fa-filter"></i> Filter Period:
+                    </label>
+                    <select id="shopDetailsFilter" class="form-control"
+                        style="max-width: 200px; display: inline-block;">
+                        <option value="today">Today</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="week">This Week</option>
+                        <option value="month" selected>This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                </div>
+
+                <!-- Analytics Grid -->
+                <div class="stats-grid" style="margin-bottom: 20px;">
+                    <!-- Group 1: Overview / Key Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon sales">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Sales</h3>
+                            <div class="value" id="shopDetailsTotalSales">0.00</div>
+                            <div class="change positive" id="shopDetailsFilterLabel">This Month</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Profit</h3>
+                            <div class="value" id="shopDetailsTotalProfit">0.00</div>
+                            <div class="change positive">Calculated</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Profit Margin</h3>
+                            <div class="value" id="shopDetailsProfitMargin">0%</div>
+                            <div class="change info">Markup</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Balance</h3>
+                            <div class="value" id="shopDetailsCurrentBalance">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp + Pending)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-store-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Valuation</h3>
+                            <div class="value" id="shopDetailsValuation">0.00</div>
+                            <div class="change info">Total Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 2: Daily & Net Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Today's Expenses</h3>
+                            <div class="value" id="shopDetailsTodayExpenses">0.00</div>
+                            <div class="change expense">Today</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="shopDetailsBalanceTitle">Shop sales+balance</h3>
+                            <div class="value" id="shopDetailsTodayBalance">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Credit</h3>
+                            <div class="value" id="shopDetailsTotalCredit">0.00</div>
+                            <div class="change warning">All Time</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Pending Balance</h3>
+                            <div class="value" id="shopDetailsPendingBalance">0.00</div>
+                            <div class="change danger">Outstanding</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 3: Inventory Valuation -->
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Value (Cost)</h3>
+                            <div class="value" id="shopDetailsProductCostValue">0.00</div>
+                            <div class="change warning">Inventory Cost</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Sell Value</h3>
+                            <div class="value" id="shopDetailsProductSellValue">0.00</div>
+                            <div class="change success">Inventory Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 4: Inventory Logistics -->
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Count</h3>
+                            <div class="value" id="shopDetailsProductCount">0</div>
+                            <div class="change success">Total Items</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon credit">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>In Stock</h3>
+                            <div class="value" id="shopDetailsInStock">0</div>
+                            <div class="change positive">Units</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Out of Stock</h3>
+                            <div class="value" id="shopDetailsOutStock">0</div>
+                            <div class="change negative">Products</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/super-admin.js"></script>
+</body>
+
+</html>

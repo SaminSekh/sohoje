@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="settings-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Shop Settings <span id="shopIdDisplay" class="text-muted"
+                        style="font-size: 0.8rem; font-weight: normal; margin-left: 10px;"></span></h3>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Settings Tabs -->
+            <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="shop-info">Shop Information</button>
+                <button class="tab-btn" data-tab="business">Business Settings</button>
+                <button class="tab-btn" data-tab="pos">POS Settings</button>
+                <button class="tab-btn" data-tab="public-view">Public View Settings</button>
+                <button class="tab-btn" data-tab="notifications">Notifications</button>
+                <button class="tab-btn" data-tab="backup">Backup & Export</button>
+            </div>
+
+            <!-- Shop Information Tab -->
+            <div class="tab-content active" id="shop-info">
+                <div class="settings-card">
+                    <h4><i class="fas fa-store"></i> Shop Details</h4>
+
+                    <form id="shopInfoForm">
+                        <div class="form-group">
+                            <label>Shop Name *</label>
+                            <input type="text" id="shopName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unique Shop Address (Slug) *</label>
+                            <div class="input-with-action">
+                                <span class="prefix"
+                                    style="padding: 10px; background: #eee; border: 1px solid #ddd; border-right: none; border-radius: 8px 0 0 8px; color: #777; font-size: 0.9rem;">/shop/</span>
+                                <input type="text" id="shopSlug" required placeholder="my-awesome-shop"
+                                    style="border-radius: 0 8px 8px 0; flex: 1;">
+                            </div>
+                            <small class="text-muted">This will be your custom link text. Only letters, numbers, and
+                                dashes allowed.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Shop Address</label>
+                            <textarea id="shopAddress" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="shopPhone">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Your Public Shop Link</label>
+                            <div class="input-with-action">
+                                <input type="text" id="shopPublicLink" readonly placeholder="Loading link...">
+                                <button type="button" class="btn btn-secondary" id="copyLinkBtn" title="Copy Link">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <a id="viewShopBtn" href="#" target="_blank" class="btn btn-info" title="View Shop">
+                                    <i class="fas fa-external-link-alt"></i> View
+                                </a>
+                            </div>
+                            <small class="text-muted">Share this link with your customers to show them your
+                                products.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Shop Logo</label>
+                            <div class="logo-upload">
+                                <div class="logo-preview">
+                                    <img id="logoPreview" src="assets/default-shop-logo.png" alt="Shop Logo">
+                                </div>
+                                <div class="logo-actions">
+                                    <button type="button" class="btn btn-sm btn-action" id="uploadLogoBtn">
+                                        <i class="fas fa-upload"></i> Upload Logo
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-action btn-danger" id="removeLogoBtn">
+                                        <i class="fas fa-trash"></i> Remove
+                                    </button>
+                                    <input type="file" id="logoFile" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-action">
+                            <i class="fas fa-save"></i> Save Information
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Business Settings Tab -->
+            <div class="tab-content" id="business">
+                <div class="settings-card">
+                    <h4><i class="fas fa-business-time"></i> Business Settings</h4>
+
+                    <form id="businessForm">
+                        <div class="form-group">
+                            <label>Business Type *</label>
+                            <select id="businessType" required>
+                                <option value="general">General Store</option>
+                                <option value="restaurant">Restaurant / Cafe</option>
+                                <option value="medicine">Pharmacy / Medicine</option>
+                                <option value="grocery">Grocery Store</option>
+                                <option value="cloth">Clothing / Boutique</option>
+                                <option value="footwear">Footwear Store</option>
+                                <option value="cosmetics">Cosmetics & Personal Care</option>
+                                <option value="electronics">Electronics & Mobile</option>
+                                <option value="furniture">Furniture & Home</option>
+                                <option value="home_decor">Home Decor</option>
+                                <option value="home_appliances">Home Appliances</option>
+                                <option value="stationery">Stationery & Books</option>
+                                <option value="toys">Toys & Gifts</option>
+                                <option value="gifts">Gifts & Greeting Cards</option>
+                                <option value="sports">Sports & Fitness</option>
+                                <option value="pet_supplies">Pet Supplies</option>
+                                <option value="jewellery">Jewellery & Accessories</option>
+                                <option value="car">Automotive / Cars</option>
+                                <option value="bike">Bikes / Motorcycles</option>
+                                <option value="parts">Spare Parts / Auto Parts</option>
+                                <option value="tree">Nursery / Plants</option>
+                                <option value="craft">Handicrafts / Art</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Currency *</label>
+                            <select id="shopCurrency" required>
+                                <option value="INR" selected>Indian Rupee (₹)</option>
+                                <option value="USD">US Dollar ($)</option>
+                                <option value="EUR">Euro (€)</option>
+                                <option value="GBP">British Pound (£)</option>
+                                <option value="JPY">Japanese Yen (¥)</option>
+                                <option value="CNY">Chinese Yuan (¥)</option>
+                                <option value="AUD">Australian Dollar (A$)</option>
+                                <option value="CAD">Canadian Dollar (C$)</option>
+                                <option value="CHF">Swiss Franc (CHF)</option>
+                                <option value="HKD">Hong Kong Dollar (HK$)</option>
+                                <option value="SGD">Singapore Dollar (S$)</option>
+                                <option value="SEK">Swedish Krona (kr)</option>
+                                <option value="KRW">South Korean Won (₩)</option>
+                                <option value="PKR">Pakistani Rupee (₨)</option>
+                                <option value="TWD">New Taiwan Dollar (NT$)</option>
+                                <option value="AED">UAE Dirham (د.إ)</option>
+                                <option value="SAR">Saudi Riyal (﷼)</option>
+                                <option value="NZD">New Zealand Dollar (NZ$)</option>
+                                <option value="ZAR">South African Rand (R)</option>
+                                <option value="BRL">Brazilian Real (R$)</option>
+                                <option value="RUB">Russian Ruble (₽)</option>
+                                <option value="MYR">Malaysian Ringgit (RM)</option>
+                                <option value="THB">Thai Baht (฿)</option>
+                                <option value="IDR">Indonesian Rupiah (Rp)</option>
+                                <option value="VND">Vietnamese Dong (₫)</option>
+                                <option value="PHP">Philippine Peso (₱)</option>
+                                <option value="TRY">Turkish Lira (₺)</option>
+                                <option value="EGP">Egyptian Pound (E£)</option>
+                                <option value="NGN">Nigerian Naira (₦)</option>
+                                <option value="BDT">Bangladeshi Taka (৳)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tax Rate (%)</label>
+                            <input type="number" id="taxRate" step="0.01" min="0" value="18">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Default Profit Margin (%)</label>
+                            <input type="number" id="profitMargin" step="0.01" min="0" value="30">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="enableTax" checked>
+                                <label for="enableTax">Enable Tax Calculation</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="enableLowStockAlert" checked>
+                                <label for="enableLowStockAlert">Enable Low Stock Alerts</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Low Stock Alert Threshold</label>
+                            <input type="number" id="lowStockThreshold" min="1" value="10">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Current Balance (Cash in Hand)</label>
+                            <input type="number" id="shopAsset" step="0.01" value="0">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-action">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- POS Settings Tab -->
+            <div class="tab-content" id="pos">
+                <div class="settings-card">
+                    <h4><i class="fas fa-cash-register"></i> POS Settings</h4>
+
+                    <form id="posForm">
+                        <div class="form-group">
+                            <label>Default Payment Method</label>
+                            <select id="defaultPaymentMethod">
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="credit">Credit</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="enableBarcodeScanner" checked>
+                                <label for="enableBarcodeScanner">Enable Barcode Scanner</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="enableQuickSale" checked>
+                                <label for="enableQuickSale">Enable Quick Sale Mode</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" id="autoPrintInvoice" checked>
+                                <label for="autoPrintInvoice">Auto Print Invoice</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Receipt Header Text</label>
+                            <textarea id="receiptHeader" rows="2">Thank you for shopping with us!</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Receipt Footer Text</label>
+                            <textarea id="receiptFooter" rows="2">Please visit again!</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-action">
+                            <i class="fas fa-save"></i> Save POS Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Public View Settings Tab -->
+            <div class="tab-content" id="public-view">
+                <div class="settings-card">
+                    <h4><i class="fas fa-eye"></i> Public View Settings</h4>
+                    <p class="text-muted" style="margin-bottom: 20px;">Customize how your shop appears to customers on
+                        the public link.</p>
+
+                    <form id="publicViewForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fab fa-whatsapp"></i> WhatsApp Number (Order)</label>
+                                <input type="text" id="publicWhatsapp" placeholder="+1234567890">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-telegram"></i> Telegram ID (Order)</label>
+                                <input type="text" id="publicTelegram" placeholder="@yourusername">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fab fa-facebook"></i> Facebook Page URL</label>
+                                <input type="url" id="publicFacebook" placeholder="https://facebook.com/yourshop">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fab fa-instagram"></i> Instagram URL</label>
+                                <input type="url" id="publicInstagram" placeholder="https://instagram.com/yourshop">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-globe"></i> Custom Domain</label>
+                            <input type="text" id="publicCustomDomain" placeholder="www.yourshop.com">
+                            <small class="text-muted">Point your domain CNAME to our servers (Contact admin for
+                                setup).</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-search"></i> SEO Keywords</label>
+                            <input type="text" id="publicKeywords" placeholder="shop, grocery, online store, organic">
+                            <small class="text-muted">Comma separated keywords for search engines.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-code"></i> Custom Scripts (Header/Analytics)</label>
+                            <textarea id="publicCustomScripts" rows="4"
+                                placeholder="<script>... analytics or pixels ...</script>"></textarea>
+                            <small class="text-muted">Paste your Google Analytics, Facebook Pixel, or other tracking
+                                scripts here. They will be injected into the public shop view.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marked-alt"></i> Google Maps Embed URL</label>
+                            <input type="text" id="publicMapsUrl"
+                                placeholder="https://www.google.com/maps/embed?pb=...">
+                            <div
+                                style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-top: 8px; font-size: 0.85rem; border-left: 4px solid #ffeeba;">
+                                <strong>Important:</strong> To avoid "Refused to connect" errors: <br>
+                                1. Open Google Maps <br>
+                                2. Click <strong>Share</strong> <br>
+                                3. Select <strong>Embed a map</strong> <br>
+                                4. Copy the link inside the <code>src="..."</code> attribute (or paste the whole iframe
+                                tag here).
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-info-circle"></i> About Us (Footer)</label>
+                            <textarea id="publicAboutUs" rows="3"
+                                placeholder="Tell your customers about your shop..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i> Opening Hours</label>
+                            <textarea id="publicOpeningHours" rows="2"
+                                placeholder="Monday - Sunday: 9:00 AM - 10:00 PM"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-magic"></i> Select Shop Theme (10 Styles)</label>
+                            <div class="theme-selector-grid">
+                                <div class="theme-card active" data-theme="default" data-color="#0f6425">
+                                    <div class="theme-preview" style="background: #0f6425;"></div>
+                                    <span>Forest (Classic)</span>
+                                </div>
+                                <div class="theme-card" data-theme="ocean" data-color="#1e3a8a">
+                                    <div class="theme-preview" style="background: #1e3a8a;"></div>
+                                    <span>Ocean Blue</span>
+                                </div>
+                                <div class="theme-card" data-theme="sunset" data-color="#ea580c">
+                                    <div class="theme-preview"
+                                        style="background: linear-gradient(135deg, #ea580c, #f59e0b);"></div>
+                                    <span>Sunset Glow</span>
+                                </div>
+                                <div class="theme-card" data-theme="neon" data-color="#7c3aed">
+                                    <div class="theme-preview"
+                                        style="background: #000; border: 2px solid #7c3aed; box-shadow: 0 0 10px #7c3aed inset;">
+                                    </div>
+                                    <span>Neon Night</span>
+                                </div>
+                                <div class="theme-card" data-theme="minimal" data-color="#111827">
+                                    <div class="theme-preview" style="background: #fff; border: 1px solid #ddd;"></div>
+                                    <span>Minimalist</span>
+                                </div>
+                                <div class="theme-card" data-theme="luxe" data-color="#1c1917">
+                                    <div class="theme-preview" style="background: #1c1917; border: 1px solid #d4af37;">
+                                    </div>
+                                    <span>Premium Luxe</span>
+                                </div>
+                                <div class="theme-card" data-theme="berry" data-color="#db2777">
+                                    <div class="theme-preview" style="background: #db2777;"></div>
+                                    <span>Berry Sweet</span>
+                                </div>
+                                <div class="theme-card" data-theme="eco" data-color="#166534">
+                                    <div class="theme-preview" style="background: #dcfce7; border: 2px solid #166534;">
+                                    </div>
+                                    <span>Eco Green</span>
+                                </div>
+                                <div class="theme-card" data-theme="royal" data-color="#581c87">
+                                    <div class="theme-preview" style="background: #581c87;"></div>
+                                    <span>Royal Gold</span>
+                                </div>
+                                <div class="theme-card" data-theme="retro" data-color="#ef4444">
+                                    <div class="theme-preview" style="background: #fdf2f2; border: 4px solid #ef4444;">
+                                    </div>
+                                    <span>Retro Pop</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="publicThemeColor" value="#0f6425">
+                            <input type="hidden" id="publicThemeLayout" value="default">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-images"></i> Carousel Images (Max 5)</label>
+                            <div class="carousel-upload-wrapper">
+                                <div id="carouselPreview" class="carousel-preview-grid">
+                                    <!-- Previews will appear here -->
+                                </div>
+                                <div class="carousel-actions" style="margin-top: 15px;">
+                                    <div class="add-carousel-btn" id="addCarouselItem">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Add Image</span>
+                                    </div>
+                                    <input type="file" id="carouselFileInput" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                            <small class="text-muted">Add up to 5 high-quality images for your shop's header
+                                carousel.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-ad"></i> Public Banner Text</label>
+                            <textarea id="publicBannerText" rows="2"
+                                placeholder="Welcome to our shop! Get 10% off on your first order."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-action">
+                            <i class="fas fa-save"></i> Save Public View Settings
+                        </button>
+                    </form>
+                </div>
+
+                <div class="settings-card" style="margin-top: 20px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h4><i class="fas fa-ticket-alt"></i> Discount Codes</h4>
+                        <button type="button" class="btn btn-sm btn-primary" id="addDiscountBtn">
+                            <i class="fas fa-plus"></i> Add New Code
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th>Value</th>
+                                    <th>Min. Order</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="discountsTableBody">
+                                <!-- Discount codes will be loaded here -->
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading discount codes...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup & Export Tab -->
+            <div class="tab-content" id="backup">
+                <div class="settings-card">
+                    <h4><i class="fas fa-database"></i> Backup & Export</h4>
+
+                    <div class="backup-options">
+                        <div class="backup-card">
+                            <div class="backup-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <div class="backup-info">
+                                <h5>Export All Data to Excel</h5>
+                                <p>Export products, sales, expenses, and credit data</p>
+                                <button class="btn btn-success btn-action" id="exportAllDataBtn">
+                                    <i class="fas fa-download"></i> Export All
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="backup-card">
+                            <div class="backup-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="backup-info">
+                                <h5>Export Reports to PDF</h5>
+                                <p>Generate PDF reports for sales, expenses, and inventory</p>
+                                <button class="btn btn-danger btn-action" id="exportPdfReportsBtn">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="backup-card">
+                            <div class="backup-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="backup-info">
+                                <h5>Backup to Cloud</h5>
+                                <p>Create a backup of all shop data to Supabase</p>
+                                <button class="btn btn-primary btn-action" id="backupToCloudBtn">
+                                    <i class="fas fa-upload"></i> Backup Now
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="backup-card">
+                            <div class="backup-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <div class="backup-info">
+                                <h5>Auto Backup Settings</h5>
+                                <div class="form-check">
+                                    <input type="checkbox" id="enableAutoBackup">
+                                    <label for="enableAutoBackup">Enable Daily Auto Backup</label>
+                                </div>
+                                <select id="backupTime" class="form-control">
+                                    <option value="00:00">12:00 AM</option>
+                                    <option value="03:00">3:00 AM</option>
+                                    <option value="06:00">6:00 AM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="backup-history">
+                        <h5><i class="fas fa-history"></i> Recent Backups</h5>
+                        <div class="backups-list" id="backupsList">
+                            <div class="empty-state">
+                                <i class="fas fa-database fa-2x"></i>
+                                <p>No backups found</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Discount Modal -->
+    <div class="modal" id="discountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="discountModalTitle"><i class="fas fa-ticket-alt"></i> Add Discount Code</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="discountForm">
+                    <input type="hidden" id="discountId">
+                    <div class="form-group">
+                        <label>Discount Code *</label>
+                        <input type="text" id="discountCodeName" placeholder="e.g. WELCOME10" required
+                            style="text-transform: uppercase;">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Discount Type *</label>
+                            <select id="discountType" required>
+                                <option value="percentage">Percentage (%)</option>
+                                <option value="fixed">Fixed Amount</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value *</label>
+                            <input type="number" id="discountValue" step="0.01" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Min. Order Amount</label>
+                            <input type="number" id="discountMinOrder" step="0.01" min="0" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="discountStatus">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description (Optional)</label>
+                        <textarea id="discountDescription" rows="2"
+                            placeholder="e.g. 10% off for new customers"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-primary btn-action" id="saveDiscountBtn" form="discountForm">
+                    <i class="fas fa-save"></i> Save Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+
+</html>

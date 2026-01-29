@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Management - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="credit-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Credit Management</h3>
+            </div>
+            <div class="navbar-right">
+                <button class="btn btn-primary btn-action" id="addCreditBtn">
+                    <i class="fas fa-plus"></i> Add
+                </button>
+                <button class="btn btn-success btn-action" id="exportCreditBtn">
+                    <i class="fas fa-file-excel"></i> Export
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Credit Summary -->
+            <div class="credit-summary">
+                <div class="summary-card">
+                    <div class="summary-icon danger">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Total Outstanding</h3>
+                        <div class="value" id="totalOutstanding">0</div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-icon warning">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Active Credit Buyers</h3>
+                        <div class="value" id="activeBuyers">0</div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-icon success">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Recently Cleared</h3>
+                        <div class="value" id="recentlyCleared">0</div>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-icon info">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="summary-info">
+                        <h3>Overdue Amount</h3>
+                        <div class="value" id="overdueAmount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Filters -->
+            <div class="credit-filters">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="creditSearch" placeholder="Search by buyer name or phone...">
+                </div>
+
+                <div class="filter-options">
+                    <select id="creditStatus" class="form-control">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="partial">Partially Paid</option>
+                        <option value="completed">Completed</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+
+                    <button class="btn btn-secondary btn-action" id="refreshCredit">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- Credit Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Buyer Name</th>
+                            <th>Phone</th>
+                            <th>Total Amount</th>
+                            <th>Amount Paid</th>
+                            <th>Pending Amount</th>
+                            <th>Credit Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="creditTable">
+                        <tr>
+                            <td colspan="9" class="text-center">Loading credit records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Call History -->
+            <div class="call-history">
+                <div class="section-header">
+                    <h4><i class="fas fa-phone"></i> Recent Call History</h4>
+                </div>
+                <div class="calls-list" id="callsList">
+                    <div class="empty-state">
+                        <i class="fas fa-phone fa-2x"></i>
+                        <p>No call history yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Credit Modal -->
+    <div class="modal" id="creditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-credit-card"></i> <span id="creditModalTitle">Add Credit Sale</span></h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="creditForm">
+                    <input type="hidden" id="creditId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Buyer Name *</label>
+                            <input type="text" id="buyerName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="buyerPhone" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Address</label>
+                        <textarea id="buyerAddress" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-coins"></i> Total Amount *</label>
+                            <input type="number" id="totalAmount" required step="0.01" min="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-money-bill"></i> Amount Paid *</label>
+                            <input type="number" id="amountPaid" required step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Credit Date</label>
+                            <input type="date" id="creditDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-check"></i> Due Date</label>
+                            <input type="date" id="dueDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-sticky-note"></i> Notes</label>
+                        <textarea id="creditNotes" rows="2"></textarea>
+                    </div>
+
+                    <!-- Products List for this Credit -->
+                    <div class="products-section">
+                        <h5><i class="fas fa-box"></i> Products in this Sale</h5>
+                        <div id="creditProducts">
+                            <!-- Products will be added here -->
+                        </div>
+                        <button type="button" class="btn btn-sm btn-action" id="addProductToCredit">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-danger btn-action" id="deleteCreditBtn" style="display: none;">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn btn-primary btn-action" id="saveCreditBtn">
+                    <i class="fas fa-save"></i> Save Credit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-money-bill"></i> Add Payment</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-details">
+                    <div class="form-group">
+                        <label>Buyer: <span id="paymentBuyerName"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <label>Pending Amount: <span id="pendingAmountDisplay"></span></label>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Amount *</label>
+                        <input type="number" id="paymentAmount" required step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Date</label>
+                        <input type="date" id="paymentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select id="paymentMethod">
+                            <option value="cash">Cash</option>
+                            <option value="bank">Bank Transfer</option>
+                            <option value="card">Card</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="paymentNotes" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Cancel</button>
+                <button class="btn btn-primary btn-action" id="savePaymentBtn">
+                    <i class="fas fa-check"></i> Record Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/credit.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,375 @@
+<!-- Shop owner dashbord  -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Dashboard - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="shop-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3 id="pageTitle">Shop Dashboard</h3>
+            </div>
+            <div class="navbar-right" id="navbarRight">
+                <div class="user-menu">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-fullname" id="userFullName">Loading...</div>
+                        <div class="user-email" id="userEmail">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <div class="content">
+
+
+            <!-- Dashboard Content -->
+            <div id="dashboardContent">
+                <!-- Welcome Section -->
+                <div class="welcome-section">
+                    <div class="welcome-header">
+                        <div class="welcome-text">
+                            <h2>Welcome back, <span id="welcomeName">User</span>!</h2>
+                            <p>Manage your shop efficiently with our comprehensive dashboard.</p>
+                        </div>
+                        <div class="time-filter">
+                            <div class="select-wrapper">
+                                <i class="fas fa-calendar-alt filter-icon"></i>
+                                <select id="timeRangeFilter" class="form-control filter-select">
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="year">This Year</option>
+                                    <option value="custom">Date Range</option>
+                                </select>
+                            </div>
+                            <div id="customDateRange" class="custom-date-inputs" style="display: none;">
+                                <input type="date" id="startDate" class="form-control date-input">
+                                <input type="date" id="endDate" class="form-control date-input">
+                                <button id="applyCustomRange"
+                                    class="btn btn-primary btn-action btn-sm btn-narrow">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <!-- Group 1: Key Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon sales">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Sales</h3>
+                            <div class="value" id="totalSales">0.00</div>
+                            <div class="change positive" id="salesFilterLabel">This Month</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Profit</h3>
+                            <div class="value" id="totalProfit">0.00</div>
+                            <div class="change positive">Calculated</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Profit Margin</h3>
+                            <div class="value" id="profitMargin">0%</div>
+                            <div class="change info">Markup</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Balance</h3>
+                            <div class="value" id="currentBalance">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp + Pending)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon info">
+                            <i class="fas fa-store-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Shop Valuation</h3>
+                            <div class="value" id="shopValuation">0.00</div>
+                            <div class="change info">Total Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 2: Daily & Net Financials -->
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Today's Expenses</h3>
+                            <div class="value" id="todayExpenses">0.00</div>
+                            <div class="change expense">Today</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon profit">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="netBalanceTitle">Shop sales+balance</h3>
+                            <div class="value" id="netBalance">0.00</div>
+                            <small style="color: var(--gray); font-size: 11px; margin-top: 2px; display: block;">(Sales
+                                + Income + Asset) - (Exp)</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Credit</h3>
+                            <div class="value" id="totalCredit">0.00</div>
+                            <div class="change warning">All Time</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon danger">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Pending Balance</h3>
+                            <div class="value" id="pendingBalance">0.00</div>
+                            <div class="change danger">Outstanding</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 3: Inventory Valuation -->
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Value (Cost)</h3>
+                            <div class="value" id="productCostValue">0.00</div>
+                            <div class="change warning">Inventory Cost</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Sell Value</h3>
+                            <div class="value" id="productSellValue">0.00</div>
+                            <div class="change success">Inventory Worth</div>
+                        </div>
+                    </div>
+
+                    <!-- Group 4: Inventory Logistics -->
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Product Count</h3>
+                            <div class="value" id="productCount">0</div>
+                            <div class="change success">Total Items</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon credit">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>In Stock</h3>
+                            <div class="value" id="inStock">0</div>
+                            <div class="change positive">Units</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon expense">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Out of Stock</h3>
+                            <div class="value" id="outOfStock">0</div>
+                            <div class="change negative">Products</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Charts and Tables Row -->
+                <div class="chart-row">
+                    <!-- Sales Chart -->
+                    <div class="chart-container-modern" id="salesChartContainer">
+                        <div class="chart-header">
+                            <h4><i class="fas fa-chart-line"></i> Sales Trend (Last 7 Days)</h4>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h4><i class="fas fa-star"></i> Top 5 Products</h4>
+                        </div>
+                        <div class="top-products-list" id="topProductsList">
+                            <div class="empty-state">
+                                <i class="fas fa-box-open fa-2x"></i>
+                                <p>No sales data yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <a href="pos.html" class="btn btn-primary btn-action">
+                        <i class="fas fa-cash-register"></i> New Sale
+                    </a>
+                    <a href="inventory.html" class="btn btn-success btn-action">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+                    <a href="credit.html" class="btn btn-warning btn-action">
+                        <i class="fas fa-credit-card"></i> Check Credits
+                    </a>
+                    <a href="expenses.html" class="btn btn-danger btn-action">
+                        <i class="fas fa-money-bill-wave"></i> Add Expense
+                    </a>
+                </div>
+
+                <!-- Recent Sales -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="fas fa-history"></i> Recent Sales
+                        </div>
+                        <div class="table-actions">
+                            <a href="sales.html" class="btn btn-primary btn-sm btn-action">
+                                <i class="fas fa-eye"></i> View All
+                            </a>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Sold By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentSales">
+                            <tr>
+                                <td colspan="7" class="text-center">No sales yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Low Stock Alert -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">
+                            <i class="fas fa-exclamation-triangle"></i> Low Stock Alert
+                        </div>
+                        <div class="table-actions">
+                            <a href="inventory.html" class="btn btn-warning btn-sm btn-action">
+                                <i class="fas fa-box"></i> Manage Inventory
+                            </a>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>SKU</th>
+                                <th>Current Stock</th>
+                                <th>Min Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lowStockTable">
+                            <tr>
+                                <td colspan="6" class="text-center">No low stock items</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- End Dashboard Content -->
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/shop-dashboard.js"></script>
+</body>
+
+</html>

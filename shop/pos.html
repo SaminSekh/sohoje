@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS - Shop Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="pos-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-store"></i> <span id="shopNameHeader">Shop Name</span></h2>
+            <div class="user-info">
+                <div class="user-name" id="userName">Loading...</div>
+                <div class="user-role" id="userRole">Shop Admin</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <!-- Menu items will be loaded dynamically by MenuManager -->
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h3>Point of Sale (POS)</h3>
+            </div>
+            <div class="navbar-right">
+                <div class="pos-date-time" id="posDateTime">
+                    <div class="pos-time" id="currentTime">00:00:00</div>
+                    <div class="pos-date" id="currentDate">Date</div>
+                </div>
+                <!-- Mobile Cart Icon (visible only on mobile) -->
+                <button class="mobile-cart-toggle" id="mobileCartToggle">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count-badge" id="cartCountBadge">0</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Product Search & Filter -->
+            <div class="pos-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="productSearch" placeholder="Search products by name, SKU, or category...">
+                </div>
+
+                <div class="filter-buttons">
+                    <button class="btn btn-sm" data-filter="all">All Products</button>
+                    <button class="btn btn-sm" data-filter="low-stock">Low Stock (< 10)</button>
+                            <button class="btn btn-sm" data-filter="category">By Category</button>
+                            <select id="categoryFilter" class="form-control">
+                                <option value="">All Categories</option>
+                                <!-- Categories will be loaded dynamically -->
+                            </select>
+                            <select id="typeFilter" class="form-control" style="display: none;">
+                                <option value="">All Types</option>
+                                <!-- Types will be loaded dynamically -->
+                            </select>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="pos-layout">
+                <!-- Left: Product Grid -->
+                <div class="product-grid-section">
+                    <div class="section-header">
+                        <h4><i class="fas fa-box"></i> Available Products</h4>
+                        <div class="product-count" id="productCount">0 products</div>
+                    </div>
+
+                    <div class="product-grid" id="productGrid">
+                        <!-- Products will be loaded here -->
+                        <div class="empty-state">
+                            <i class="fas fa-box-open fa-2x"></i>
+                            <p>No products available</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Cart & Checkout -->
+                <div class="cart-section mobile-collapsible" id="cartSection">
+                    <div class="cart-header">
+                        <div class="header-left">
+                            <button class="mobile-close-btn" id="closeCartBtn">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                            <h4><i class="fas fa-shopping-cart"></i> Shopping Cart</h4>
+                        </div>
+                        <button class="btn btn-sm btn-danger btn-action" id="clearCartBtn">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+
+                    <!-- Cart Items -->
+                    <div class="cart-items" id="cartItems">
+                        <div class="empty-cart">
+                            <div class="empty-cart-icon">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <h5>Your cart is empty</h5>
+                            <p>Select products from the list to start a sale</p>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="cartSubtotal">0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Discount:</span>
+                            <div class="discount-input">
+                                <input type="number" id="discountAmount" placeholder="0" min="0">
+                                <span id="discountCurrency"></span>
+                            </div>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <span id="cartTotal">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Section -->
+                    <div class="payment-section">
+                        <div class="payment-method">
+                            <h5><i class="fas fa-credit-card"></i> Payment Method</h5>
+                            <div class="payment-grid">
+                                <label class="payment-card active" data-method="cash">
+                                    <input type="radio" name="paymentMethod" value="cash" checked>
+                                    <div class="card-content">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <span>Cash</span>
+                                    </div>
+                                </label>
+                                <label class="payment-card" data-method="credit">
+                                    <input type="radio" name="paymentMethod" value="credit">
+                                    <div class="card-content">
+                                        <i class="fas fa-user-clock"></i>
+                                        <span>Credit</span>
+                                    </div>
+                                </label>
+                                <label class="payment-card" data-method="card">
+                                    <input type="radio" name="paymentMethod" value="card">
+                                    <div class="card-content">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span>Card</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Credit Buyer Info (Hidden by default) -->
+                        <div class="credit-info" id="creditInfo" style="display: none;">
+                            <h5><i class="fas fa-user"></i> Credit Buyer Information</h5>
+                            <div class="form-group">
+                                <input type="text" id="buyerName" placeholder="Buyer Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="buyerPhone" placeholder="Phone Number">
+                            </div>
+                            <div class="form-group">
+                                <textarea id="buyerAddress" placeholder="Address" rows="2"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Amount Paid</label>
+                                    <input type="number" id="amountPaid" placeholder="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label>Pending Amount</label>
+                                    <input type="number" id="pendingAmount" placeholder="0" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cash Payment -->
+                        <div class="cash-payment" id="cashPayment">
+                            <div class="form-group">
+                                <label>Amount Received</label>
+                                <input type="number" id="amountReceived" placeholder="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Change</label>
+                                <input type="number" id="changeAmount" placeholder="0" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="pos-actions-grid">
+                            <button class="btn btn-primary btn-action btn-lg" id="checkoutBtn">
+                                <i class="fas fa-check-circle"></i> Complete Sale
+                            </button>
+                            <div class="secondary-actions">
+                                <button class="btn btn-outline-secondary" id="holdSaleBtn" title="Hold Sale">
+                                    <i class="fas fa-pause"></i>
+                                </button>
+                                <button class="btn btn-outline-info" id="printInvoiceBtn" title="Print Invoice">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="recent-transactions">
+                <div class="section-header">
+                    <h4><i class="fas fa-history"></i> Recent Transactions</h4>
+                    <button class="btn btn-sm btn-action" id="refreshTransactions">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div class="transactions-list" id="transactionsList">
+                    <div class="empty-state">
+                        <i class="fas fa-receipt fa-2x"></i>
+                        <p>No recent transactions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Backdrop (for mobile) -->
+    <div class="cart-backdrop" id="cartBackdrop"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Product Quick View Modal -->
+    <div class="modal" id="productQuickView">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-eye"></i> Product Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="productDetails">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div class="modal" id="invoiceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-receipt"></i> Invoice</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="invoiceContent">
+                <!-- Invoice will be generated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-action close-modal">Close</button>
+                <button class="btn btn-primary btn-action" id="printActualBtn">
+                    <i class="fas fa-print"></i> Print Invoice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/menu-manager.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pos.js"></script>
+</body>
+
+</html>
