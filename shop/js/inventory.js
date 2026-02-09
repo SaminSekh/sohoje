@@ -534,7 +534,7 @@ class InventoryManager {
             'Spare Parts': ['Engine Parts', 'Body Parts', 'Electrical Parts', 'Tires', 'Batteries', 'Lubricants / Oils', 'Filters', 'Brake Pads', 'Tools', 'Other'],
             'Nursery': ['Indoor Plants', 'Outdoor Plants', 'Flowering Plants', 'Fruit Plants', 'Seeds', 'Pots & Planters', 'Fertilizers', 'Gardening Tools', 'Other'],
             'Handicraft': ['Wooden Crafts', 'Clay Crafts', 'Paintings', 'Wall Hangings', 'Baskets', 'Textile Arts', 'Metal Crafts', 'Paper Crafts', 'Other'],
-            'Other': ['Service', 'General', 'Miscellaneous']
+            'Other': ['Customer Service','Design','Numbers','Digital','Service', 'General', 'Miscellaneous']
         };
 
         // Standardize category name for lookup (handle both lower and sentence case)
@@ -1876,3 +1876,4 @@ if (window.location.pathname.includes('inventory.html')) {
         new InventoryManager();
     });
 }
+
