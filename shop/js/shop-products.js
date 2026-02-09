@@ -880,3 +880,22 @@ class ShopProductsViewer {
 
 let app;
 document.addEventListener('DOMContentLoaded', () => { app = new ShopProductsViewer(); window.app = app; });
+
+
+
+
+
+function formatDescs() {
+    document.querySelectorAll('#detailDesc, [class*="desc"]').forEach(el => {
+        if (!el.classList.contains('formatted')) {
+            el.style.whiteSpace = 'pre-line';
+            el.style.lineHeight = '1.6';
+            el.classList.add('formatted');
+        }
+    });
+}
+
+if (document.readyState === 'complete') formatDescs();
+else document.addEventListener('DOMContentLoaded', formatDescs);
+
+
