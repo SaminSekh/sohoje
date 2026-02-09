@@ -3,11 +3,39 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Products - Shop Management System</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Products</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="manifest" href="manifest.json">
+
+<!-- ================= COMMON SEO (GLOBAL) ================= -->
+
+<!-- Robots -->
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<!-- Referrer Policy -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<!-- Canonical (can be same or dynamically updated later) -->
+<link rel="canonical" href="https://www.yoursite.com/">
+
+<!-- Open Graph (Common / Global) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shop Management System">
+<meta property="og:url" content="https://www.yoursite.com/">
+
+<!-- Twitter Card (Common / Global) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yourtwitterhandle">
+
+<!-- PWA / Mobile -->
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1032,8 +1060,8 @@
             <div class="public-carousel-item"
                 style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
                 <div class="public-hero-overlay">
-                    <h2 id="publicHeroName">Our Menu</h2>
-                    <p id="publicHeroAddress">Exquisite Tastes & Quality Products</p>
+                    <h2 id="publicHeroName"></h2>
+                    <p id="publicHeroAddress"></p>
                 </div>
             </div>
         </div>
@@ -1216,3 +1244,4 @@
 
 
 </html>
+
